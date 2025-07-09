@@ -1,0 +1,30 @@
+using Leopotam.EcsLite;
+
+using UnityEngine;
+using UnityEngine.AI;
+
+namespace Client 
+{
+    struct ViewComponent : IComponent
+    {
+        public GameObject RefObject;
+
+        public void AddComponent(EcsWorld world, int entity)
+        {
+            var gameObject = GameObject.Instantiate(RefObject);
+
+            ref var viewComp = ref world.GetPool<ViewComponent>().Add(entity);
+            viewComp.RefObject = gameObject;
+
+            ref var transformComp = ref world.GetPool<TransformComponent>().Add(entity);
+            transformComp.Transform = gameObject.transform;
+
+            if (gameObject.TryGetComponent<NavMeshAgent>(out var navMeshAgent))
+            {
+                ref var navMeshComp = ref world.GetPool<NavMeshComponent>().Add(entity);
+                navMeshComp.NavMeshAgent = navMeshAgent;
+            }
+
+        }
+    }
+}
