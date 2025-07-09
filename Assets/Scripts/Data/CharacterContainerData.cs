@@ -1,3 +1,5 @@
+using UnityEngine;
+
 [System.Serializable]
 public class CharacterContainerData : IDatable
 {
@@ -52,5 +54,6 @@ public class CharacterData
     {
         CHARACTER_KEY_ID = characterKeyId;
         Index = index;
+        Debug.Log($"Save character {CHARACTER_KEY_ID}");
     }
 }

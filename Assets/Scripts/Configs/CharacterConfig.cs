@@ -14,6 +14,7 @@ public class CharacterConfig : Config
         _characterConfigs = new Dictionary<string, CharacterBase> ();
         foreach (var character in _characters)
         {
+            Debug.Log (character.KEY_ID + "Character");
             _characterConfigs.Add(character.KEY_ID, character);
         }
 

@@ -1,8 +1,11 @@
- public class TutorEcsHandler : EcsRunHandler
+using Client;
+
+public class TutorEcsHandler : EcsRunHandler
 {
     public TutorEcsHandler() 
-    { 
-
+    {
+        _systems
+            .Add(new RunRequestWrapperSystem<NetworkUnitEntitySpawnEvent>());
     } 
 
     public override EcsRunHandler Clone()
@@ -10,26 +13,5 @@
         return new TutorEcsHandler();
     }
 
-    public override void Init()
-    {
-        _systems.Init();
-    }
-
-    public override void Run()
-    {
-        _systems.Run();
-    }
-
-    public override void FixedRun()
-    {
-
-    }
-
-    public override void Dispose()
-    {
-        _systems.Destroy();
-        World.Destroy();
-        World = null;
-    }
 
 }

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class PlayerEntity : SourceEntity
 {
     public static PlayerEntity Instance;
@@ -24,5 +26,6 @@ public class PlayerEntity : SourceEntity
     {
         CurrentPlayerCharacter = CurrentBaseCharacter.GetCharacter();
         CurrentPlayerCharacter.Index = CurrentCharacterSlotIndex;
+        Debug.Log($"Create new character {CurrentPlayerCharacter.KEY_ID}");
     }
 }

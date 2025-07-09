@@ -38,15 +38,15 @@ public class PhotonInitializer : MonoBehaviour
         runner = gameObject.AddComponent<NetworkRunner>();
         runner.ProvideInput = session.ProvideInput;
 
-        var dummySceneManager = runner.gameObject.AddComponent<NetworkSceneManagerNone>();
+        var sceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>();
 
         var args = new StartGameArgs
         {
             GameMode = session.Mode,
             SessionName = session.RoomName,
-            Scene = SceneRef.None,
-            SceneManager = dummySceneManager
-        }; 
+            Scene = SceneRef.FromIndex(session.SceneBuildIndex),
+            SceneManager = sceneManager
+        };
 
         var result = await runner.StartGame(args);
 
@@ -75,7 +75,7 @@ public class PhotonInitializer : MonoBehaviour
          
         if (runner.IsSharedModeMasterClient) 
         { 
-            currentHandler.StartGameSceneRPC(MemoryPackSerializer.Serialize<NetworkSessionData>(new NetworkSessionData(session.ScenePath))); 
+            //currentHandler.StartGameSceneRPC(MemoryPackSerializer.Serialize<NetworkSessionData>(new NetworkSessionData(session.ScenePath))); 
         }
     }
 
@@ -98,12 +98,11 @@ public class PhotonInitializer : MonoBehaviour
     }
 }
 
-
 public struct SessionParams
 {
     public GameMode Mode;
     public string RoomName;
-    public string ScenePath; // Вместо SceneIndex
+    public int SceneBuildIndex; // Используем Build Index вместо пути
     public bool ProvideInput;
 }
 

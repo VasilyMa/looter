@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d9d48292b3d2024b8159aea4bcd4596, type: 3}
+  m_Name: player_entity
+  m_EditorClassIdentifier: 
+  Components:
+  - rid: 9181853936227975168
+  - rid: 9112970153533636608
+  references:
+    version: 2
+    RefIds:
+    - rid: 9112970153533636608
+      type: {class: ViewComponent, ns: Client, asm: Assembly-CSharp}
+      data:
+        RefObject: {fileID: 2992454020813769253, guid: 38b77ce29dd04d34a9df406087215f38,
+          type: 3}
+    - rid: 9181853936227975168
+      type: {class: PlayerComponent, ns: Client, asm: Assembly-CSharp}
+      data: 

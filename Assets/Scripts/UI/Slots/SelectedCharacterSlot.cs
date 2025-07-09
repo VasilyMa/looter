@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -17,6 +18,8 @@ public class SelectedCharacterSlot : SourceSlot
 
     public override void OnClick()
     {
+        Debug.Log($"Click slot {CharacterData.CHARACTER_KEY_ID}");
+
         PlayerEntity.Instance.CurrentCharacterSlotIndex = Index;
 
         if (CharacterData == null || string.IsNullOrEmpty(CharacterData.CHARACTER_KEY_ID))

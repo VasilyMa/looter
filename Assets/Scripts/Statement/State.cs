@@ -34,7 +34,7 @@ namespace Statement
         public abstract void FixedUpdate();
         public virtual void OnDestroy()
         {
-            _canvases.ForEach(_canvas => _canvas.Dispose());
+            _canvases?.ForEach(_canvas => _canvas.Dispose());
         }
         protected virtual void InitCanvas()
         {

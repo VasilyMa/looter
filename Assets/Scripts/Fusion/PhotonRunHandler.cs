@@ -4,6 +4,7 @@ using Client;
 
 using Fusion;
 using MemoryPack;
+using Statement;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -13,6 +14,8 @@ using UnityEngine.SceneManagement;
 public class PhotonRunHandler : NetworkBehaviour
 {
     private static PhotonRunHandler _instance;
+    private NetworkRunner runner;
+
     public static PhotonRunHandler Instance
     {
         get
@@ -33,8 +36,6 @@ public class PhotonRunHandler : NetworkBehaviour
         }
     }
 
-    private NetworkRunner runner;
-
 
     protected void Awake()
     {
@@ -48,7 +49,6 @@ public class PhotonRunHandler : NetworkBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-
     public void Init(NetworkRunner runner)
     {
         this.runner = runner;
@@ -56,14 +56,13 @@ public class PhotonRunHandler : NetworkBehaviour
         Debug.Log("PhotonRunHandler Initialized");
         // Можно тут инициализировать ECS-систему, сцены, префабы и т.п.
     }
-
-    
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void SendPlayerSpawnRPC(byte[] recieve)
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    public void SendUnitEntitySpawnRPC(byte[] recieve)
     {
-        NetworkPlayerSpawnEvent spawnEvent = MemoryPackSerializer.Deserialize<NetworkPlayerSpawnEvent>(recieve);
-        Debug.Log($"{spawnEvent.Key} new key");
+        NetworkUnitEntitySpawnEvent networkSpawnEvent = MemoryPackSerializer.Deserialize<NetworkUnitEntitySpawnEvent>(recieve);
+         
+        BattleState.Instance.SendRequest(networkSpawnEvent);
+        Debug.Log($"{networkSpawnEvent.SpawnKeyID} spawn entity player");
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -74,8 +73,7 @@ public class PhotonRunHandler : NetworkBehaviour
         Debug.Log($"StartGameSceneRPC received: {sessionData.ScenePath}");
 
         StartCoroutine(LoadSceneAsync(sessionData.ScenePath));
-    }
-
+    } 
     private IEnumerator LoadSceneAsync(string scenePath)
     {
         var ecsConfig = ConfigModule.GetConfig<EcsSetupConfig>();
@@ -97,5 +95,4 @@ public class PhotonRunHandler : NetworkBehaviour
             Debug.LogError("Failed to load scene from Addressables: " + scenePath);
         }
     }
-
 }

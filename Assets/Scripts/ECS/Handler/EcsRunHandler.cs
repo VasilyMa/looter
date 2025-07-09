@@ -15,13 +15,31 @@ public abstract class EcsRunHandler
 #if UNITY_EDITOR
         _systems.Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem());
 #endif
-        _systems.Inject();
     }
     public abstract EcsRunHandler Clone();
-    public abstract void Init();
-    public abstract void Run();
-    public abstract void FixedRun();
-    public abstract void Dispose();
+
+    public virtual void Init()
+    {
+        _systems.Inject();
+        _systems.Init();
+    }
+
+    public virtual void Run()
+    {
+        _systems.Run();
+    }
+
+    public virtual void FixedRun()
+    {
+
+    }
+
+    public virtual void Dispose()
+    {
+        _systems.Destroy();
+        World.Destroy();
+        World = null;
+    } 
 }
 
 public class EcsData

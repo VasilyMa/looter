@@ -8,8 +8,8 @@ namespace Client
     sealed class RunNetworkPlayerSpawnSystem : IEcsRunSystem 
     {
         readonly EcsWorldInject _world = default;
-        readonly EcsFilterInject<Inc<NetworkPlayerSpawnEvent>> _filter = default;
-        readonly EcsPoolInject<NetworkPlayerSpawnEvent> _pool = default;
+        readonly EcsFilterInject<Inc<NetworkUnitEntitySpawnEvent>> _filter = default;
+        readonly EcsPoolInject<NetworkUnitEntitySpawnEvent> _pool = default;
 
         public void Run (IEcsSystems systems) 
         {
@@ -17,7 +17,7 @@ namespace Client
             {
                 ref var networkComp = ref _pool.Value.Get(entity);
 
-                PhotonRunHandler.Instance.SendPlayerSpawnRPC(MemoryPackSerializer.Serialize<NetworkPlayerSpawnEvent>(networkComp));
+                PhotonRunHandler.Instance.SendUnitEntitySpawnRPC(MemoryPackSerializer.Serialize<NetworkUnitEntitySpawnEvent>(networkComp));
             }
         }
     }

@@ -59,8 +59,8 @@ public class StatusEffectSlotView : SourceSlot
     {
         IsOccupied = false;
         Data.OnRemainingChange -= UpdateRemaining;
-        _icon.gameObject.SetActive(false);
         _progressFill.gameObject.SetActive(false);
         Data = null;
+        gameObject.SetActive(false);
     }
 }

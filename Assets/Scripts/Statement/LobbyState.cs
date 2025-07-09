@@ -35,12 +35,12 @@ namespace Statement
         }
         async void TutorialStart()
         { 
-
             var session = new SessionParams
             {
                 Mode = GameMode.Single,
                 RoomName = "TutorialRoom",
-                ScenePath = "TutorialScene" // םמגמו ןמכו, גלוסעמ SceneIndex
+                SceneBuildIndex = 4, 
+                ProvideInput = true 
             };
 
             await PhotonInitializer.Instance.StartSession(session);

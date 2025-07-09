@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LobbyScene.unity
     guid: 4287e7219a2c7254780dcbf288771751
+  - enabled: 1
+    path: Assets/Scenes/TutorialScene.unity
+    guid: 61d7166a2ef373646aeed24e75ae2489
+  - enabled: 1
+    path: Assets/Scenes/BattleScene.unity
+    guid: 12346ec4f9a3e294dafa818b2261d1b7
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 96e763d0dc9b48b4bb75075bfe344401,
       type: 2}
