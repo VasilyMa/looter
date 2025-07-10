@@ -1,18 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Leopotam.EcsLite;
 
-public class IStat : MonoBehaviour
+public interface IStat
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float GetMaxValue { get; }
+    public float GetCurrentValue {  get; }
+    void Init(EcsWorld world, int entity);
+    void SetCurrent(float value);
+    void Sub(float value);
+    void Add(float value);
 }

@@ -1,5 +1,7 @@
+using Client;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
+using Leopotam.EcsLite.ExtendedSystems;
 
 public abstract class EcsRunHandler
 {
@@ -11,6 +13,17 @@ public abstract class EcsRunHandler
         World = new Leopotam.EcsLite.EcsWorld();
         _data = new EcsData();
         _systems = new EcsSystems(World, _data);
+        _systems
+            .Add(new RunInputSystem())
+            .Add(new RunPlayerMovementSystem())
+            .Add(new RunNPCMovementSystem())
+
+
+            .Add(new RunRequestWrapperSystem<NetworkTransformEvent>())
+            .Add(new RunReceiveTransformSystem())
+            .DelHere<NetworkTransformUpdateEvent>()
+            .Add(new RunLerpNetworkTransformSystem())
+            ;
 
 #if UNITY_EDITOR
         _systems.Add(new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem());

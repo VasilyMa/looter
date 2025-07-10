@@ -24,7 +24,11 @@ namespace Client
                 ref var navMeshComp = ref world.GetPool<NavMeshComponent>().Add(entity);
                 navMeshComp.NavMeshAgent = navMeshAgent;
             }
-
+            if (gameObject.TryGetComponent<CharacterController>(out var controller))
+            {
+                ref var characterControllerComp = ref world.GetPool<CharacterControllerComponent>().Add(entity);
+                characterControllerComp.CharacterController = controller;
+            }
         }
     }
 }

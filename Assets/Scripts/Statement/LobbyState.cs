@@ -30,9 +30,23 @@ namespace Statement
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 //LoadSceneAsync("TutorialScene");
-                TutorialStart(); 
+                //TutorialStart(); 
             }
         }
+
+        public async void StartMatchmaking()
+        {
+            var session = new SessionParams
+            {
+                Mode = GameMode.AutoHostOrClient,
+                RoomName = $"Match_{Random.Range(0, 1000)}",
+                SceneBuildIndex = 5,
+                ProvideInput = true 
+            };
+
+            await PhotonInitializer.Instance.StartSession(session);
+        }
+
         async void TutorialStart()
         { 
             var session = new SessionParams

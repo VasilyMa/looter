@@ -12,12 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d9d48292b3d2024b8159aea4bcd4596, type: 3}
   m_Name: player_entity
   m_EditorClassIdentifier: 
+  KEY_ID: player_entity
   Components:
   - rid: 9181853936227975168
   - rid: 9112970153533636608
+  Stats:
+  - rid: 8307050283103158275
+  - rid: 8307050283103158277
   references:
     version: 2
     RefIds:
+    - rid: 8307050283103158275
+      type: {class: HealthComponent, ns: Client, asm: Assembly-CSharp}
+      data:
+        BaseValue: 100
+    - rid: 8307050283103158277
+      type: {class: MoveComponent, ns: Client, asm: Assembly-CSharp}
+      data:
+        BaseValue: 5
     - rid: 9112970153533636608
       type: {class: ViewComponent, ns: Client, asm: Assembly-CSharp}
       data:

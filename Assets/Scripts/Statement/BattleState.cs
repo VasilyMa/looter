@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using Client;
+using Fusion;
 using Leopotam.EcsLite;
-
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Statement
@@ -17,6 +17,9 @@ namespace Statement
         }
 
         [HideInInspector] public EcsRunHandler EcsHandler;
+
+        public EntityBase PlayerEntityBase;
+        public int PlayerEntity = -1;
 
         protected Dictionary<string, EcsPackedEntity> dictionaryEntities = new Dictionary<string, EcsPackedEntity>();
 
@@ -70,6 +73,10 @@ namespace Statement
             ref var eventComp = ref world.GetPool<TRequest>().Add(entityEvent);
 
             eventComp = request;
+        }
+        protected EcsRunHandler CreateHandler()
+        {
+            return PhotonRunHandler.Instance.Runner.IsServer ? new ServerRunHandler() : new ClientRunHandler();
         }
     }
 }

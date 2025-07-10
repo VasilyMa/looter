@@ -56,13 +56,37 @@ public class PhotonRunHandler : NetworkBehaviour
         Debug.Log("PhotonRunHandler Initialized");
         // Можно тут инициализировать ECS-систему, сцены, префабы и т.п.
     }
-    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void SendUnitEntitySpawnRPC(byte[] recieve)
     {
         NetworkUnitEntitySpawnEvent networkSpawnEvent = MemoryPackSerializer.Deserialize<NetworkUnitEntitySpawnEvent>(recieve);
-         
+        Debug.Log($"Spawn entity: {networkSpawnEvent.SpawnKeyID}");
         BattleState.Instance.SendRequest(networkSpawnEvent);
-        Debug.Log($"{networkSpawnEvent.SpawnKeyID} spawn entity player");
+    }
+
+    [Rpc(RpcSources.Proxies, RpcTargets.StateAuthority)]
+    public void SendRequestDamageEffectRPC(byte[] recieve)
+    {
+        NetworkDamageEffectEvent networkDamageEffectEvent = MemoryPackSerializer.Deserialize<NetworkDamageEffectEvent>(recieve);
+        Debug.Log($"Damage from {networkDamageEffectEvent.EntityKeySource} to {networkDamageEffectEvent.EntityKeyTarget} is {networkDamageEffectEvent.Value}");
+        BattleState.Instance.SendRequest(networkDamageEffectEvent);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.Proxies)]
+    public void SendRequestHealthUpdateRPC(byte[] recieve)
+    {
+        NetworkHealthUpdateEvent networkHealthUpdateEvent = MemoryPackSerializer.Deserialize<NetworkHealthUpdateEvent>(recieve);
+        Debug.Log($"Update health of entity {networkHealthUpdateEvent.EntityKey} to {networkHealthUpdateEvent}");
+        BattleState.Instance.SendRequest(networkHealthUpdateEvent);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void SendRequestTransformRPC(byte[] recieve)
+    {
+        NetworkTransformEvent networkTransformEvent = MemoryPackSerializer.Deserialize<NetworkTransformEvent>(recieve);
+        Debug.Log($"Update transform of entity {networkTransformEvent.EntityKey}");
+        BattleState.Instance.SendRequest(networkTransformEvent);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

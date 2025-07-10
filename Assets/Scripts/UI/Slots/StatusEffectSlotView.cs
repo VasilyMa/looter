@@ -47,7 +47,7 @@ public class StatusEffectSlotView : SourceSlot
         }
 
         _progressFill.gameObject.SetActive(true);
-        Data.OnRemainingChange += UpdateRemaining;
+        if(Data != null) Data.OnRemainingChange += UpdateRemaining;
     }
 
     public void UpdateRemaining(float current, float max)
@@ -58,9 +58,13 @@ public class StatusEffectSlotView : SourceSlot
     public void ResetSlot()
     {
         IsOccupied = false;
-        Data.OnRemainingChange -= UpdateRemaining;
         _progressFill.gameObject.SetActive(false);
-        Data = null;
         gameObject.SetActive(false);
+
+        if (Data != null)
+        {
+            Data.OnRemainingChange -= UpdateRemaining;
+            Data = null;
+        }
     }
 }

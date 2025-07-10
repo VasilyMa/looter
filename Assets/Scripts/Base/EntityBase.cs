@@ -10,13 +10,24 @@ using UnityEngine;
 public class EntityBase : ScriptableObject, ISerializationCallbackReceiver
 {
     public string KEY_ID;
+    [Header("Main attributes entity")]
     [SerializeReference] public List<IComponent> Components;
+
+    [Space(5f)]
+    [Header("Combat stats of entity")]
+    [SerializeReference] public List<IStat> Stats;
+
 
     public void InitEntity(EcsWorld world, int entity)
     {
         foreach (var component in Components)
         {
             component.AddComponent(world, entity);
+        }
+
+        foreach (var stat in Stats)
+        {
+            stat.Init(world, entity);
         }
     }
 

@@ -15,7 +15,7 @@ public abstract class SourcePanel : MonoBehaviour
 
     protected List<SourceWindow> _windows;
     protected List<SourceLayout> _layouts;
-
+    protected List<SourceBar> _bars;
     protected CanvasGroup _canvasGroup;
     protected RectTransform _rectTransform;
     protected SourceCanvas _sourceCanvas;
@@ -33,9 +33,11 @@ public abstract class SourcePanel : MonoBehaviour
         _canvasGroup = GetComponent<CanvasGroup>();
         _windows = new List<SourceWindow>();
         _layouts = new List<SourceLayout>();
+        _bars = new List<SourceBar>();
 
         var windows = GetComponentsInChildren<SourceWindow>(true);
         var layouts = GetComponentsInChildren<SourceLayout>(true);
+        var status = GetComponentsInChildren<SourceBar>(true);
 
         for (int i = 0; i < windows.Length; i++)
         {
@@ -45,6 +47,11 @@ public abstract class SourcePanel : MonoBehaviour
         for (int i = 0; i < layouts.Length; i++)
         {
             _layouts.Add(layouts[i].Init(this));
+        }
+
+        for (int i = 0; i < status.Length; i++)
+        {
+            _bars.Add(status[i].Init(this));
         }
 
         isOpen = false;
