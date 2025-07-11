@@ -1,5 +1,6 @@
 using Client;
 using Statement;
+using System;
 using UnityEngine;
 public class BattlePanel : SourcePanel
 {
@@ -9,6 +10,10 @@ public class BattlePanel : SourcePanel
     {
         base.Init(canvasParent);
 
+    }
+
+    public override void OnOpen(params Action[] onComplete)
+    {
         if (joystick)
         {
             var world = BattleState.Instance.EcsHandler.World;
@@ -17,6 +22,22 @@ public class BattlePanel : SourcePanel
 
             ref var inputComp = ref world.GetPool<InputComponent>().Add(inputEntity);
             inputComp.Joystick = joystick;
+
+            BattleState.Instance.InputEntity = inputEntity; 
         }
+
+        base.OnOpen(onComplete);
+    }
+
+    public override void OnCLose(params Action[] onComplete)
+    {
+        if (joystick)
+        {
+            var world = BattleState.Instance.EcsHandler.World;
+             
+            world.DelEntity(BattleState.Instance.InputEntity);
+        }
+
+        base.OnCLose(onComplete);
     }
 }

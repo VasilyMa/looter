@@ -20,11 +20,15 @@ namespace Statement
 
         public EntityBase PlayerEntityBase;
         public int PlayerEntity = -1;
+        public int InputEntity = -1;
 
         protected Dictionary<string, EcsPackedEntity> dictionaryEntities = new Dictionary<string, EcsPackedEntity>();
+        protected Dictionary<int, PlayerRef> dictionaryPlayers = new Dictionary<int, PlayerRef>(); 
 
-        public override void Awake() => EcsHandler = new MainEcsHandler(); 
-        public override void Start() => EcsHandler.Init();
+        public virtual void OnStarted() => EcsHandler.Init();
+        public virtual void OnSceneLoaded() => EcsHandler = new MainEcsHandler();
+        public virtual void ShutdownEcsHandler() => EcsHandler.Dispose();
+        public override void Start() { }
         public override void Update() => EcsHandler.Run();
         public override void FixedUpdate() => EcsHandler.FixedRun();
         public override void OnDestroy()
@@ -74,9 +78,31 @@ namespace Statement
 
             eventComp = request;
         }
-        protected EcsRunHandler CreateHandler()
+
+        public void AddPlayer(NetworkPlayerData data)
         {
-            return PhotonRunHandler.Instance.Runner.IsServer ? new ServerRunHandler() : new ClientRunHandler();
+            if (!dictionaryPlayers.ContainsKey(data.PlayerOwn))
+            {    
+                var players = PhotonInitializer.Instance.Runner.ActivePlayers;
+
+                foreach (var player in players)
+                {
+                    if (player.PlayerId == data.PlayerOwn)
+                    {
+                        dictionaryPlayers.Add(data.PlayerOwn, player);
+                    }
+                }
+            } 
+
+            if (PhotonRunHandler.Instance.SessionData.TargetPlayerCount == dictionaryPlayers.Count)
+            {
+                PhotonRunHandler.Instance.SendRequestStartGameRPC();
+            }
+        }
+
+        protected void CreateHandler()
+        {
+            EcsHandler = PhotonRunHandler.Instance.Runner.IsServer ? new ServerRunHandler() : new ClientRunHandler();
         }
     }
 }

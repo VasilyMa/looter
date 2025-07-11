@@ -19,18 +19,23 @@ namespace Statement
         {
             PlayerEntity = -1;
 
-            EcsHandler = CreateHandler();
+            CreateHandler();
 
             InitCanvas();
+        } 
+
+        public override void OnSceneLoaded()
+        {
+            
         }
 
-        public override void Start()
+        public override void OnStarted()
         {
-            base.Start();
-
-            InvokeCanvas<BattleCanvas>().OpenPanel<BattlePanel>();
+            base.OnStarted();
 
             var runner = PhotonRunHandler.Instance.Runner;
+
+            InvokeCanvas<BattleCanvas>().OpenPanel<BattlePanel>();
 
             string networkKey = Guid.NewGuid().ToString();
 
@@ -42,6 +47,27 @@ namespace Statement
             });
 
             PhotonRunHandler.Instance.SendUnitEntitySpawnRPC(sendData);
+        }
+
+        public override void Start()
+        {
+            var runner = PhotonRunHandler.Instance.Runner;
+
+            if (runner.IsServer)
+            {
+
+                byte[] sendData = MemoryPack.MemoryPackSerializer.Serialize<NetworkPlayerData>(new NetworkPlayerData()
+                {
+                    PlayerOwn = runner.LocalPlayer.PlayerId
+                });
+
+                PhotonRunHandler.Instance.SendRequestReadyToStartRPC(sendData); 
+            }
+            else
+            {
+                BattleState.Instance.AddPlayer(new NetworkPlayerData(runner.LocalPlayer.PlayerId));
+            }
+
         }
     }
 }

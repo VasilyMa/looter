@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96b2533aecdf52642b4f8d3e5be3ac8a, type: 3}
   m_Name: player-character-sentinel
   m_EditorClassIdentifier: 
-  KEY_ID: Sentinel
+  KEY_ID: player-character-sentinel
   Character:
     rid: 7463880789973270528
   references:
@@ -21,5 +21,5 @@ MonoBehaviour:
     - rid: 7463880789973270528
       type: {class: SentinelCharacter, ns: , asm: Assembly-CSharp}
       data:
-        KEY_ID: Sentinel
+        KEY_ID: player-character-sentinel
         UnitViewRef: {fileID: 0}

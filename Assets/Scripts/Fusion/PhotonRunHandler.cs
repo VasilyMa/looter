@@ -1,122 +1,124 @@
-using System.Collections;
-
 using Client;
-
 using Fusion;
 using MemoryPack;
-using Statement;
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.ResourceManagement.AsyncOperations; 
 using UnityEngine.SceneManagement;
+using Statement;
 
 public class PhotonRunHandler : NetworkBehaviour
 {
-    private static PhotonRunHandler _instance;
+    public static PhotonRunHandler Instance { get; private set; } 
     private NetworkRunner runner;
+    public NetworkSessionData SessionData;
 
-    public static PhotonRunHandler Instance
+    private void Awake()
     {
-        get
+        if (Instance == null)
         {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<PhotonRunHandler>();
-
-                if (_instance == null)
-                {
-                    GameObject obj = new GameObject(typeof(PhotonRunHandler).Name);
-                    _instance = obj.AddComponent<PhotonRunHandler>();
-                }
-
-                DontDestroyOnLoad(_instance.gameObject);
-            }
-            return _instance;
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-    }
-
-
-    protected void Awake()
-    {
-        if (_instance != null && _instance != this)
+        else if (Instance != this)
         {
             Destroy(gameObject);
         }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
     }
-    public void Init(NetworkRunner runner)
-    {
-        this.runner = runner;
 
-        Debug.Log("PhotonRunHandler Initialized");
-        // Можно тут инициализировать ECS-систему, сцены, префабы и т.п.
+    public override void Spawned()
+    {
+        base.Spawned();
+
+        runner = PhotonInitializer.Instance.Runner;
+
+        Debug.Log("[PhotonRunHandler] Init called. Runner: " + runner?.name);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void SendUnitEntitySpawnRPC(byte[] recieve)
     {
-        NetworkUnitEntitySpawnEvent networkSpawnEvent = MemoryPackSerializer.Deserialize<NetworkUnitEntitySpawnEvent>(recieve);
-        Debug.Log($"Spawn entity: {networkSpawnEvent.SpawnKeyID}");
-        BattleState.Instance.SendRequest(networkSpawnEvent);
+        var data = MemoryPackSerializer.Deserialize<NetworkUnitEntitySpawnEvent>(recieve);
+        BattleState.Instance.SendRequest(data);
     }
 
     [Rpc(RpcSources.Proxies, RpcTargets.StateAuthority)]
     public void SendRequestDamageEffectRPC(byte[] recieve)
     {
-        NetworkDamageEffectEvent networkDamageEffectEvent = MemoryPackSerializer.Deserialize<NetworkDamageEffectEvent>(recieve);
-        Debug.Log($"Damage from {networkDamageEffectEvent.EntityKeySource} to {networkDamageEffectEvent.EntityKeyTarget} is {networkDamageEffectEvent.Value}");
-        BattleState.Instance.SendRequest(networkDamageEffectEvent);
+        var data = MemoryPackSerializer.Deserialize<NetworkDamageEffectEvent>(recieve);
+        BattleState.Instance.SendRequest(data);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.Proxies)]
     public void SendRequestHealthUpdateRPC(byte[] recieve)
     {
-        NetworkHealthUpdateEvent networkHealthUpdateEvent = MemoryPackSerializer.Deserialize<NetworkHealthUpdateEvent>(recieve);
-        Debug.Log($"Update health of entity {networkHealthUpdateEvent.EntityKey} to {networkHealthUpdateEvent}");
-        BattleState.Instance.SendRequest(networkHealthUpdateEvent);
+        var data = MemoryPackSerializer.Deserialize<NetworkHealthUpdateEvent>(recieve);
+        BattleState.Instance.SendRequest(data);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void SendRequestTransformRPC(byte[] recieve)
     {
-        NetworkTransformEvent networkTransformEvent = MemoryPackSerializer.Deserialize<NetworkTransformEvent>(recieve);
-        Debug.Log($"Update transform of entity {networkTransformEvent.EntityKey}");
-        BattleState.Instance.SendRequest(networkTransformEvent);
+        var data = MemoryPackSerializer.Deserialize<NetworkTransformEvent>(recieve);
+        BattleState.Instance.SendRequest(data);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void SendRequestReadyToStartRPC(byte[] receive)
+    {
+        var data = MemoryPackSerializer.Deserialize<NetworkPlayerData>(receive);
+
+        BattleState.Instance.AddPlayer(data);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void StartGameSceneRPC(byte[] recieve)
+    public void SendRequestStartGameRPC()
     {
-        NetworkSessionData sessionData = MemoryPackSerializer.Deserialize<NetworkSessionData>(recieve);
+        BattleState.Instance.OnStarted();
+    }
 
-        Debug.Log($"StartGameSceneRPC received: {sessionData.ScenePath}");
-
-        StartCoroutine(LoadSceneAsync(sessionData.ScenePath));
-    } 
-    private IEnumerator LoadSceneAsync(string scenePath)
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void StartGameSceneRPC(byte[] rawData)
     {
-        var ecsConfig = ConfigModule.GetConfig<EcsSetupConfig>();
-        ecsConfig.InitMainEcsHandler();
-
-        // Запуск загрузки адресуемой сцены
-        AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(scenePath, LoadSceneMode.Single);
-
-        // Ожидание окончания загрузки
-        yield return handle;
-
-        if (handle.Status == AsyncOperationStatus.Succeeded)
+        try
         {
-            Debug.Log($"Scene loaded successfully: {handle.Result.Scene.name}");
-            // Можно дополнительно проинициализировать что-то
+            SessionData = MemoryPackSerializer.Deserialize<NetworkSessionData>(rawData);
+            StartCoroutine(LoadSceneRoutine(SessionData.ScenePath));
         }
-        else
+        catch (Exception ex)
         {
-            Debug.LogError("Failed to load scene from Addressables: " + scenePath);
+            Debug.LogError($"[PhotonRunHandler] Scene RPC failed: {ex}");
         }
+    }
+
+    private IEnumerator LoadSceneRoutine(string scenePath)
+    {
+        yield return PrepareForSceneUnload();
+
+        var loadHandle = Addressables.LoadSceneAsync(scenePath, LoadSceneMode.Single);
+        yield return loadHandle;
+
+        if (loadHandle.Status != AsyncOperationStatus.Succeeded)
+        {
+            Debug.LogError($"[PhotonRunHandler] Scene load failed: {scenePath}");
+            yield break;
+        }
+
+        Debug.Log($"[PhotonRunHandler] Scene loaded: {loadHandle.Result.Scene.name}");
+        yield return InitializeScenePostLoad();
+    }
+
+    private IEnumerator PrepareForSceneUnload()
+    {
+        BattleState.Instance?.ShutdownEcsHandler();
+        yield return null;
+    }
+
+    private IEnumerator InitializeScenePostLoad()
+    {
+        BattleState.Instance?.OnSceneLoaded();
+        yield return null;
     }
 }

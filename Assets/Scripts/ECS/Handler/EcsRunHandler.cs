@@ -14,14 +14,22 @@ public abstract class EcsRunHandler
         _data = new EcsData();
         _systems = new EcsSystems(World, _data);
         _systems
+            .Add(new InitCameraSystem())
+
+            //CommonRunSystems
             .Add(new RunInputSystem())
             .Add(new RunPlayerMovementSystem())
             .Add(new RunNPCMovementSystem())
+            .Add(new RunCameraSwitchSystem())
 
-
+            //RequestWrapperSystems
             .Add(new RunRequestWrapperSystem<NetworkTransformEvent>())
+
+            //ReceiveSystems
             .Add(new RunReceiveTransformSystem())
             .DelHere<NetworkTransformUpdateEvent>()
+
+            //SyncNetworkSystems
             .Add(new RunLerpNetworkTransformSystem())
             ;
 

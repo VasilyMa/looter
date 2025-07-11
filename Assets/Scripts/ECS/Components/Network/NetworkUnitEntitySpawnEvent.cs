@@ -30,6 +30,13 @@ namespace Client
                     world.GetPool<OwnComponent>().Add(entity);
 
                     BattleState.Instance.PlayerEntity = entity;
+
+                    if (BattleState.Instance.TryGetEntity("camera", out int cameraEntity))
+                    {
+                        ref var transformComp = ref world.GetPool<TransformComponent>().Get(entity);
+
+                        world.GetPool<CameraSwitchEvent>().Add(cameraEntity).Target = transformComp.Transform;
+                    }
                 }
 
                 BattleState.Instance.AddEntity(EntityKey, entity);
