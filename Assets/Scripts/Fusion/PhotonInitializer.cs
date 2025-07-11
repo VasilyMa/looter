@@ -65,7 +65,7 @@ public class PhotonInitializer : MonoBehaviour, INetworkRunnerCallbacks
 
         if (Runner.IsServer) // Спавним только если это сервер / мастер
         {
-            var obj = Runner.Spawn(runHandlerPrefab, Vector3.zero, Quaternion.identity, inputAuthority: Runner.LocalPlayer);
+            var obj = Runner.Spawn(runHandlerPrefab, Vector3.zero, Quaternion.identity, inputAuthority: Runner.LocalPlayer, flags: NetworkSpawnFlags.DontDestroyOnLoad);
 
             if (obj == null)
             {

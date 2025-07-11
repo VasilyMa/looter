@@ -23,6 +23,7 @@ public abstract class EcsRunHandler
             .Add(new RunCameraSwitchSystem())
 
             //RequestWrapperSystems
+            .Add(new RunRequestWrapperSystem<NetworkUnitEntitySpawnEvent>())
             .Add(new RunRequestWrapperSystem<NetworkTransformEvent>())
 
             //ReceiveSystems

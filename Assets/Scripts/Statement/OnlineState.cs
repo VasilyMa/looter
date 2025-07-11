@@ -1,13 +1,13 @@
 using Client;
 using Fusion;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Statement
 {
     public class OnlineState : BattleState
-    {
-
+    { 
         public static new OnlineState Instance
         {
             get
@@ -15,14 +15,35 @@ namespace Statement
                 return (OnlineState)State.Instance;
             }
         }
+
         public override void Awake()
         {
             PlayerEntity = -1;
+            InputEntity = -1;
 
-            CreateHandler();
+            InitEcsHandler();
 
             InitCanvas();
-        } 
+        }
+
+        public override void Start()
+        {
+            var runner = PhotonRunHandler.Instance.Runner;
+
+            if (runner.IsServer)
+            {
+                BattleState.Instance.AddPlayer(new NetworkPlayerData(runner.LocalPlayer.PlayerId));
+            }
+            else
+            {
+                byte[] sendData = MemoryPack.MemoryPackSerializer.Serialize<NetworkPlayerData>(new NetworkPlayerData()
+                {
+                    PlayerOwn = runner.LocalPlayer.PlayerId
+                });
+
+                PhotonRunHandler.Instance.SendRequestReadyToStartRPC(sendData);
+            }
+        }
 
         public override void OnSceneLoaded()
         {
@@ -30,12 +51,19 @@ namespace Statement
         }
 
         public override void OnStarted()
-        {
+        { 
             base.OnStarted();
 
+            InvokeCanvas<BattleCanvas>().OpenPanel<BattlePanel>();
+
+            StartCoroutine(waitToSpawnPlayer());
+        }
+
+        IEnumerator waitToSpawnPlayer()
+        {
             var runner = PhotonRunHandler.Instance.Runner;
 
-            InvokeCanvas<BattleCanvas>().OpenPanel<BattlePanel>();
+            yield return new WaitUntil(() => runner.IsRunning);
 
             string networkKey = Guid.NewGuid().ToString();
 
@@ -46,28 +74,30 @@ namespace Statement
                 PlayerOwner = runner.LocalPlayer.PlayerId
             });
 
+            Debug.Log($"Send spawn event {networkKey}");
             PhotonRunHandler.Instance.SendUnitEntitySpawnRPC(sendData);
         }
 
-        public override void Start()
+        public override void Update()
         {
-            var runner = PhotonRunHandler.Instance.Runner;
+            base.Update();
 
-            if (runner.IsServer)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
+                var runner = PhotonRunHandler.Instance.Runner;
 
-                byte[] sendData = MemoryPack.MemoryPackSerializer.Serialize<NetworkPlayerData>(new NetworkPlayerData()
+                string networkKey = Guid.NewGuid().ToString();
+
+                byte[] sendData = MemoryPack.MemoryPackSerializer.Serialize<NetworkUnitEntitySpawnEvent>(new NetworkUnitEntitySpawnEvent()
                 {
-                    PlayerOwn = runner.LocalPlayer.PlayerId
+                    EntityKey = networkKey,
+                    SpawnKeyID = PlayerEntityBase.KEY_ID,
+                    PlayerOwner = runner.LocalPlayer.PlayerId
                 });
 
-                PhotonRunHandler.Instance.SendRequestReadyToStartRPC(sendData); 
+                Debug.Log($"Send spawn event {networkKey}");
+                PhotonRunHandler.Instance.SendUnitEntitySpawnRPC(sendData);
             }
-            else
-            {
-                BattleState.Instance.AddPlayer(new NetworkPlayerData(runner.LocalPlayer.PlayerId));
-            }
-
         }
     }
 }

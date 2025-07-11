@@ -23,9 +23,9 @@ namespace Statement
         public int InputEntity = -1;
 
         protected Dictionary<string, EcsPackedEntity> dictionaryEntities = new Dictionary<string, EcsPackedEntity>();
-        protected Dictionary<int, PlayerRef> dictionaryPlayers = new Dictionary<int, PlayerRef>(); 
+        protected Dictionary<int, PlayerRef> dictionaryPlayers = new Dictionary<int, PlayerRef>();
 
-        public virtual void OnStarted() => EcsHandler.Init();
+        public virtual void OnStarted() { Debug.Log("[Start game] game started"); }
         public virtual void OnSceneLoaded() => EcsHandler = new MainEcsHandler();
         public virtual void ShutdownEcsHandler() => EcsHandler.Dispose();
         public override void Start() { }
@@ -92,17 +92,22 @@ namespace Statement
                         dictionaryPlayers.Add(data.PlayerOwn, player);
                     }
                 }
-            } 
+            }
+
+            Debug.Log($"Player add {data.PlayerOwn}");
 
             if (PhotonRunHandler.Instance.SessionData.TargetPlayerCount == dictionaryPlayers.Count)
             {
+                Debug.Log($"Player count is max {PhotonRunHandler.Instance.SessionData.TargetPlayerCount} and {PhotonRunHandler.Instance.SessionData.TargetPlayerCount == dictionaryPlayers.Count}");
                 PhotonRunHandler.Instance.SendRequestStartGameRPC();
             }
         }
 
-        protected void CreateHandler()
+        protected void InitEcsHandler()
         {
             EcsHandler = PhotonRunHandler.Instance.Runner.IsServer ? new ServerRunHandler() : new ClientRunHandler();
+
+            EcsHandler.Init();
         }
     }
 }

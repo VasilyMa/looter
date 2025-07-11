@@ -14,26 +14,18 @@ public class PhotonRunHandler : NetworkBehaviour
     public static PhotonRunHandler Instance { get; private set; } 
     private NetworkRunner runner;
     public NetworkSessionData SessionData;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
-
+     
     public override void Spawned()
     {
         base.Spawned();
 
-        runner = PhotonInitializer.Instance.Runner;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
 
+        runner = PhotonInitializer.Instance.Runner;
+        
         Debug.Log("[PhotonRunHandler] Init called. Runner: " + runner?.name);
     }
 
@@ -42,6 +34,7 @@ public class PhotonRunHandler : NetworkBehaviour
     {
         var data = MemoryPackSerializer.Deserialize<NetworkUnitEntitySpawnEvent>(recieve);
         BattleState.Instance.SendRequest(data);
+        Debug.Log($"Receive spawn event {data.EntityKey}");
     }
 
     [Rpc(RpcSources.Proxies, RpcTargets.StateAuthority)]

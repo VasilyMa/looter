@@ -6,7 +6,6 @@ public class ClientRunHandler : EcsRunHandler
     public ClientRunHandler()
     {
         _systems
-            .Add(new RunRequestWrapperSystem<NetworkUnitEntitySpawnEvent>())
             .Add(new RunRequestWrapperSystem<NetworkHealthUpdateEvent>())
             .Add(new RunHealthUpdateSystem())
             
@@ -16,6 +15,6 @@ public class ClientRunHandler : EcsRunHandler
 
     public override EcsRunHandler Clone()
     {
-        return new ServerRunHandler();
+        return new ClientRunHandler ();
     }
 }
