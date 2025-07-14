@@ -18,6 +18,7 @@ public class EntityBase : ScriptableObject, ISerializationCallbackReceiver
     [SerializeReference] public List<IStat> Stats;
 
 
+
     public void InitEntity(EcsWorld world, int entity)
     {
         foreach (var component in Components)

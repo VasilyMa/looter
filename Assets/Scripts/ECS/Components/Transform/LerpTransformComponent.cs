@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace Client {
-    struct NetworkLerpTransformComponent {
+    struct LerpTransformComponent {
         public Vector3 TargetPosition;
         public Quaternion TargetRotation;
     }

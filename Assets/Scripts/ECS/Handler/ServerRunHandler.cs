@@ -5,6 +5,14 @@ public class ServerRunHandler : EcsRunHandler
 {
     public ServerRunHandler()
     {
+        _initSystems
+            .Add(new InitSpawnSystem())
+            ;
+
+        _commonSystems
+            .Add(new RunBrainSpawnSystem())
+            ;
+
         _requestSystems
             .Add(new RunRequestWrapperSystem<NetworkDamageEffectEvent>())
 
@@ -18,7 +26,9 @@ public class ServerRunHandler : EcsRunHandler
         _sendSystems
             .Add(new RunSendConfirmDamageSystem())
             .Add(new RunSendUpdateHealthSystem())
+            .Add(new RunSendSpawnSystem())
 
+            .DelHere<SendSpawnEvent>()
             .DelHere<HealthUpdateEvent>()
             .DelHere<TakeDamageConfirmEvent>()
             ;

@@ -1,5 +1,4 @@
-using Client;
-using Fusion;
+using Client; 
 using System;
 using System.Collections;
 using UnityEngine;
@@ -63,27 +62,6 @@ namespace Statement
             InvokeCanvas<BattleCanvas>().OpenPanel<BattlePanel>();
 
             SendPlayerSpawnEvent();
-        }
-        public override void Update()
-        {
-            base.Update();
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                var runner = PhotonRunHandler.Instance.Runner;
-
-                string networkKey = Guid.NewGuid().ToString();
-
-                byte[] sendData = MemoryPack.MemoryPackSerializer.Serialize<NetworkUnitEntitySpawnEvent>(new NetworkUnitEntitySpawnEvent()
-                {
-                    EntityKey = networkKey,
-                    SpawnKeyID = PlayerEntityBase.KEY_ID,
-                    PlayerOwner = runner.LocalPlayer.PlayerId
-                });
-
-                Debug.Log($"Send spawn event {networkKey}");
-                PhotonRunHandler.Instance.SendUnitEntitySpawnRPC(sendData);
-            }
         }
 
         public void SendPlayerSpawnEvent()

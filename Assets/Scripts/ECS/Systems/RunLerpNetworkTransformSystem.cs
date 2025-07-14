@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Client {
     sealed class RunLerpNetworkTransformSystem : IEcsRunSystem 
     {
-        readonly EcsFilterInject<Inc<NetworkLerpTransformComponent, TransformComponent>, Exc<OwnComponent>> _filter = default;
+        readonly EcsFilterInject<Inc<LerpTransformComponent, TransformComponent>, Exc<OwnComponent>> _filter = default;
         readonly EcsPoolInject<TransformComponent> _transformPool = default;
-        readonly EcsPoolInject<NetworkLerpTransformComponent> _targetPool = default;
+        readonly EcsPoolInject<LerpTransformComponent> _targetPool = default;
 
         public void Run(IEcsSystems systems)
         {

@@ -1103,7 +1103,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.37856722, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00005340576, y: -0.000019073}
+  m_AnchoredPosition: {x: -0.00005340576, y: -0.000019073486}
   m_SizeDelta: {x: -0.0001, y: -0.000061035}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2311272011761133771
@@ -3477,7 +3477,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0.42718756, y: 1}
-  m_AnchoredPosition: {x: -0.00013351, y: 0}
+  m_AnchoredPosition: {x: -0.0001373291, y: 0}
   m_SizeDelta: {x: 0.0004, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3208209339140508156
@@ -4478,7 +4478,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.16125, y: 0}
+  m_AnchoredPosition: {x: 0.16125488, y: 0}
   m_SizeDelta: {x: -30, y: -30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1360464822383485444
@@ -5798,7 +5798,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.15860417, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.16121, y: 0.16656494}
+  m_AnchoredPosition: {x: 0.1612091, y: 0.16656494}
   m_SizeDelta: {x: 0.32239, y: -0.3331}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4460839904848240369
@@ -6168,7 +6168,8 @@ MonoBehaviour:
   DurationAnimate: 0.5
   isOpenOnInit: 0
   isAlwaysOpen: 0
-  joystick: {fileID: 6512977469682177996}
+  movementJoystick: {fileID: 6512977469682177996}
+  aimJoystick: {fileID: 8213109996318853628}
 --- !u!1 &5993572499240700818
 GameObject:
   m_ObjectHideFlags: 0
@@ -7111,6 +7112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a47f546fc70ec8428172694e78e4288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Type: 0
   handleRange: 1
   deadZone: 0
   axisOptions: 0
@@ -8747,6 +8749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a47f546fc70ec8428172694e78e4288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Type: 1
   handleRange: 1
   deadZone: 0
   axisOptions: 0
@@ -9013,7 +9016,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.37856722, y: 1}
-  m_AnchoredPosition: {x: -0.00008297, y: 0}
+  m_AnchoredPosition: {x: -0.000076293945, y: 0}
   m_SizeDelta: {x: 0.0071526, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &8987572409251104244
@@ -9242,7 +9245,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.65333337, y: 0}
   m_AnchorMax: {x: 1, y: 0.3066667}
-  m_AnchoredPosition: {x: 0, y: -0.000038146973}
+  m_AnchoredPosition: {x: 0, y: -0.000030517578}
   m_SizeDelta: {x: -0.0000038147, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &429340389012374083

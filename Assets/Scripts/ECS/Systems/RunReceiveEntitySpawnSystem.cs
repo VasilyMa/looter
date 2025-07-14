@@ -14,6 +14,7 @@ namespace Client
         readonly EcsPoolInject<OwnComponent> _ownPool = default;
         readonly EcsPoolInject<TransformComponent> _transformPool = default;
         readonly EcsPoolInject<CameraSwitchEvent> _camerPool = default;
+        readonly EcsPoolInject<ViewComponent> _viewPool = default;
 
         public void Run (IEcsSystems systems) 
         {
@@ -32,6 +33,9 @@ namespace Client
                     ref var networkComp = ref _networkEntityPool.Value.Add(entity);
                     networkComp.EntityKey = receiveSpawnComp.EntityKey;
                     networkComp.PlayerOwner = receiveSpawnComp.PlayerOwner;
+
+                    ref var viewComp = ref _viewPool.Value.Add(entity);
+                    viewComp.RefObject.name = networkComp.EntityKey;
 
                     if (PhotonRunHandler.Instance.Runner.LocalPlayer.PlayerId == receiveSpawnComp.PlayerOwner)
                     {

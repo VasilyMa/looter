@@ -55,7 +55,8 @@ public abstract class EcsRunHandler
             ;
 
         _commonSystems
-            .Add(new RunInputSystem())
+            .Add(new RunInputMovementSystem())
+            .Add(new RunInputAimSystem())
             .Add(new RunAimDirectionSystem())
             .Add(new RunSelectTargetSystem())
             .Add(new RunShootSystem())
