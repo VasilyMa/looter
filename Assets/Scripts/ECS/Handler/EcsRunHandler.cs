@@ -71,9 +71,11 @@ public abstract class EcsRunHandler
             .Add(new RunRequestWrapperSystem<NetworkTransformEvent>())
             ;
 
-        _receiveSystems
+        _receiveSystems 
+            .Add(new RunReceiveEntitySpawnSystem())
             .Add(new RunReceiveTransformSystem())
-            .DelHere<NetworkTransformUpdateEvent>()
+            .DelHere<ReceiveSpawnEvent>()
+            .DelHere<ReceiveTransformEvent>()
             ;
 
         _syncUpdateSystems

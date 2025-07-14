@@ -51,6 +51,13 @@ public class PhotonRunHandler : NetworkBehaviour
         BattleState.Instance.SendRequest(data);
     }
 
+    [Rpc(RpcSources.StateAuthority, RpcTargets.Proxies)]
+    public void SendRequestConfirmDamageRPC(byte[] recieve)
+    {
+        var data = MemoryPackSerializer.Deserialize<NetworkConfirmDamageEvent>(recieve);
+
+    } 
+
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void SendRequestTransformRPC(byte[] recieve)
     {

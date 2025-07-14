@@ -8,13 +8,21 @@ public class ClientRunHandler : EcsRunHandler
     {
         _requestSystems
             .Add(new RunRequestWrapperSystem<NetworkHealthUpdateEvent>())
+            .Add(new RunRequestWrapperSystem<NetworkConfirmDamageEvent>())
 
             ;
-        _syncUpdateSystems
+
+        _receiveSystems
+            .Add(new RunConfirmDamageUpdateSystem())
             .Add(new RunHealthUpdateSystem())
 
+            .DelHere<ConfirmDamageUpdateEvent>()
             .DelHere<HealthUpdateEvent>()
             ;
+
+
+        /*_syncUpdateSystems
+            ;*/
     }
 
     public override EcsRunHandler Clone()

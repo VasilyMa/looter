@@ -13,7 +13,17 @@ namespace Client
         {
             foreach (var entity in _filter.Value)
             {
-                
+                ref var takeDamageConfirmComp = ref _takeDamageConfirmPool.Value.Get(entity);
+
+                NetworkConfirmDamageEvent networkConfirmDamageEvent = new NetworkConfirmDamageEvent()
+                {
+                    DamageType = takeDamageConfirmComp.DamageType,
+                    DamageValue = takeDamageConfirmComp.DamageValue,
+                    SourceEntityKey = takeDamageConfirmComp.SourceEntityKey,
+                    TargetEntityKey = takeDamageConfirmComp.TargetEntityKey,
+                };
+
+                PhotonRunHandler.Instance.SendRequestConfirmDamageRPC(MemoryPack.MemoryPackSerializer.Serialize(networkConfirmDamageEvent));
             }
         }
     }

@@ -18,19 +18,19 @@ namespace Client
 
             if (state.TryGetEntity(EntityKey, out int entity))
             {
-                if (!world.GetPool<NetworkTransformUpdateEvent>().Has(entity))
+                if (!world.GetPool<ReceiveTransformEvent>().Has(entity))
                 {
-                    world.GetPool<NetworkTransformUpdateEvent>().Add(entity);
+                    world.GetPool<ReceiveTransformEvent>().Add(entity);
                 }
 
-                ref var networkComp = ref world.GetPool<NetworkTransformUpdateEvent>().Get(entity);
+                ref var networkComp = ref world.GetPool<ReceiveTransformEvent>().Get(entity);
                 networkComp.Position = Position;
                 networkComp.Quaternion = Rotation;
             }
         }
     }
 
-    public struct NetworkTransformUpdateEvent
+    public struct ReceiveTransformEvent
     {
         public Vector3 Position;
         public Quaternion Quaternion;

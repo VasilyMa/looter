@@ -1,15 +1,8 @@
-using Client;
-
-using Leopotam.EcsLite;
-using Leopotam.EcsLite.Di;
+ 
 public class MainEcsHandler : EcsRunHandler
 { 
     public MainEcsHandler() : base()
-    {
-        _commonSystems
-            .Add(new InitPlayerSystem())
-
-            .Add(new RunNetworkPlayerSpawnSystem());
+    { 
     }
     public override EcsRunHandler Clone()
     {

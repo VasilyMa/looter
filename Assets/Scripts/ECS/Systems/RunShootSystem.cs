@@ -14,7 +14,7 @@ namespace Client
             foreach (var entity in _filter.Value)
             {
                 ref var aimComp = ref _aimPool.Value.Get(entity);
-
+                //todo shoot
             }
         }
     }

@@ -5,9 +5,9 @@ namespace Client
 {
     sealed class RunReceiveTransformSystem : IEcsRunSystem
     {
-        readonly EcsFilterInject<Inc<NetworkTransformUpdateEvent, NetworkEntityComponent, TransformComponent>, Exc<OwnComponent>> _filter = default;
+        readonly EcsFilterInject<Inc<ReceiveTransformEvent, NetworkEntityComponent, TransformComponent>, Exc<OwnComponent>> _filter = default;
         readonly EcsPoolInject<NetworkLerpTransformComponent> _targetPool = default;
-        readonly EcsPoolInject<NetworkTransformUpdateEvent> _updateEventPool = default;
+        readonly EcsPoolInject<ReceiveTransformEvent> _updateEventPool = default;
 
         public void Run(IEcsSystems systems)
         {
