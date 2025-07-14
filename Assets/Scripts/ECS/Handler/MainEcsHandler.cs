@@ -6,7 +6,7 @@ public class MainEcsHandler : EcsRunHandler
 { 
     public MainEcsHandler() : base()
     {
-        _systems
+        _commonSystems
             .Add(new InitPlayerSystem())
 
             .Add(new RunNetworkPlayerSpawnSystem());
@@ -15,12 +15,12 @@ public class MainEcsHandler : EcsRunHandler
     {
         return new MainEcsHandler();
     }
-    public override void Init() => _systems?.Init(); 
-    public override void Run() => _systems?.Run(); 
-    public override void FixedRun() => _systems?.Run();
+    public override void Init() => _commonSystems?.Init(); 
+    public override void Run() => _commonSystems?.Run(); 
+    public override void FixedRun() => _commonSystems?.Run();
     public override void Dispose()
     { 
-        _systems.Destroy();
+        _commonSystems.Destroy();
         World.Destroy();
         World = null;
     }

@@ -24,8 +24,13 @@ namespace Statement
 
         protected Dictionary<string, EcsPackedEntity> dictionaryEntities = new Dictionary<string, EcsPackedEntity>();
         protected Dictionary<int, PlayerRef> dictionaryPlayers = new Dictionary<int, PlayerRef>();
-
+        /// <summary>
+        /// Invoke when host send any clients message of start game
+        /// </summary>
         public virtual void OnStarted() { Debug.Log("[Start game] game started"); }
+        /// <summary>
+        /// Invoke when scene loaded with addressables
+        /// </summary>
         public virtual void OnSceneLoaded() => EcsHandler = new MainEcsHandler();
         public virtual void ShutdownEcsHandler() => EcsHandler.Dispose();
         public override void Start() { }
@@ -78,7 +83,10 @@ namespace Statement
 
             eventComp = request;
         }
-
+        /// <summary>
+        /// Register player on scene from PhotonInitializer
+        /// </summary>
+        /// <param name="data"></param>
         public void AddPlayer(NetworkPlayerData data)
         {
             if (!dictionaryPlayers.ContainsKey(data.PlayerOwn))

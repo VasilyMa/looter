@@ -16,9 +16,7 @@ namespace Client
                 ref var healthComp = ref _healthPool.Value.Get(entity);
                 ref var updateComp = ref _updatePool.Value.Get(entity);
 
-                healthComp.SetCurrent(updateComp.CurrentValue);
-
-                _updatePool.Value.Del(entity);
+                healthComp.SetCurrent(updateComp.CurrentValue); 
             }
         }
     }

@@ -11,8 +11,7 @@ public class PhotonInitializer : MonoBehaviour, INetworkRunnerCallbacks
     public static PhotonInitializer Instance { get; private set; }
 
     [Header("Prefabs")]
-    [SerializeField] private NetworkObject runHandlerPrefab;
-
+    [SerializeField] private NetworkObject runHandlerPrefab; 
     [HideInInspector] public NetworkRunner Runner;
     
     private PhotonRunHandler currentHandler;

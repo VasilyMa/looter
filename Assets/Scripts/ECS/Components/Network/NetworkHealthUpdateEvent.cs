@@ -30,6 +30,7 @@ namespace Client
 
     public struct HealthUpdateEvent
     {
+        public string EntityKey;
         public float CurrentValue;
     }
 }

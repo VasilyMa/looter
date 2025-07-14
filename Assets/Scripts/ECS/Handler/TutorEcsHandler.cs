@@ -4,7 +4,7 @@ public class TutorEcsHandler : EcsRunHandler
 {
     public TutorEcsHandler() 
     {
-        _systems
+        _commonSystems
             .Add(new RunRequestWrapperSystem<NetworkUnitEntitySpawnEvent>());
     } 
 

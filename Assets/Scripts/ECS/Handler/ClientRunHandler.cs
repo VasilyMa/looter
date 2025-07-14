@@ -1,16 +1,20 @@
 using Client;
 using Leopotam.EcsLite;
+using Leopotam.EcsLite.ExtendedSystems;
 
 public class ClientRunHandler : EcsRunHandler
 {
     public ClientRunHandler()
     {
-        _systems
+        _requestSystems
             .Add(new RunRequestWrapperSystem<NetworkHealthUpdateEvent>())
-            .Add(new RunHealthUpdateSystem())
-            
+
             ;
-            
+        _syncUpdateSystems
+            .Add(new RunHealthUpdateSystem())
+
+            .DelHere<HealthUpdateEvent>()
+            ;
     }
 
     public override EcsRunHandler Clone()

@@ -28,7 +28,14 @@ namespace Statement
 
         public override void Start()
         {
+            StartCoroutine(AwaitingReadyStart());
+        }
+
+        IEnumerator AwaitingReadyStart()
+        {
             var runner = PhotonRunHandler.Instance.Runner;
+            
+            yield return new WaitUntil(() => runner.IsRunning);
 
             if (runner.IsServer)
             {
@@ -48,36 +55,15 @@ namespace Statement
         public override void OnSceneLoaded()
         {
             
-        }
-
+        } 
         public override void OnStarted()
         { 
             base.OnStarted();
 
             InvokeCanvas<BattleCanvas>().OpenPanel<BattlePanel>();
 
-            StartCoroutine(waitToSpawnPlayer());
+            SendPlayerSpawnEvent();
         }
-
-        IEnumerator waitToSpawnPlayer()
-        {
-            var runner = PhotonRunHandler.Instance.Runner;
-
-            yield return new WaitUntil(() => runner.IsRunning);
-
-            string networkKey = Guid.NewGuid().ToString();
-
-            byte[] sendData = MemoryPack.MemoryPackSerializer.Serialize<NetworkUnitEntitySpawnEvent>(new NetworkUnitEntitySpawnEvent()
-            {
-                EntityKey = networkKey,
-                SpawnKeyID = PlayerEntityBase.KEY_ID,
-                PlayerOwner = runner.LocalPlayer.PlayerId
-            });
-
-            Debug.Log($"Send spawn event {networkKey}");
-            PhotonRunHandler.Instance.SendUnitEntitySpawnRPC(sendData);
-        }
-
         public override void Update()
         {
             base.Update();
@@ -98,6 +84,23 @@ namespace Statement
                 Debug.Log($"Send spawn event {networkKey}");
                 PhotonRunHandler.Instance.SendUnitEntitySpawnRPC(sendData);
             }
+        }
+
+        public void SendPlayerSpawnEvent()
+        { 
+            var runner = PhotonRunHandler.Instance.Runner;
+
+            string networkKey = Guid.NewGuid().ToString();
+
+            byte[] sendData = MemoryPack.MemoryPackSerializer.Serialize<NetworkUnitEntitySpawnEvent>(new NetworkUnitEntitySpawnEvent()
+            {
+                EntityKey = networkKey,
+                SpawnKeyID = PlayerEntityBase.KEY_ID,
+                PlayerOwner = runner.LocalPlayer.PlayerId
+            });
+
+            Debug.Log($"Send spawn event {networkKey}");
+            PhotonRunHandler.Instance.SendUnitEntitySpawnRPC(sendData);
         }
     }
 }

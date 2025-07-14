@@ -2,6 +2,7 @@ namespace Client
 {
     struct InputComponent 
     {
-        public FloatingJoystick Joystick;
+        public FloatingJoystick MovementJoystick;
+        public FloatingJoystick AimJoystick;
     }
 }

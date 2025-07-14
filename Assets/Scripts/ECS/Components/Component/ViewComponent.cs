@@ -29,6 +29,17 @@ namespace Client
                 ref var characterControllerComp = ref world.GetPool<CharacterControllerComponent>().Add(entity);
                 characterControllerComp.CharacterController = controller;
             }
+             
+            var transforms = gameObject.GetComponentsInChildren<Transform>(true);
+
+            foreach (var transform in transforms)
+            {
+                if (transform.CompareTag("Top"))
+                {
+                    ref var topTransformComp = ref world.GetPool<TopTransformComponent>().Add(entity);
+                    topTransformComp.Transform = transform;
+                } 
+            } 
         }
     }
 }

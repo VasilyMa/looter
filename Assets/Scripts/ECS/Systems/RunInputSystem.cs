@@ -11,6 +11,7 @@ namespace Client
         readonly EcsFilterInject<Inc<InputComponent>> _filter = default;
         readonly EcsPoolInject<InputComponent> _inputPool = default;
         readonly EcsPoolInject<DirectionComponent> _directionPool = default;
+        readonly EcsPoolInject<AimDirectionComponent> _aimDirectionPool = default;
 
         public void Run(IEcsSystems systems)
         {
@@ -22,8 +23,8 @@ namespace Client
 
                 ref var inputComp = ref _inputPool.Value.Get(entity);
 
-                float horizontal = inputComp.Joystick.Horizontal;
-                float vertical = inputComp.Joystick.Vertical;
+                float horizontal = inputComp.MovementJoystick.Horizontal;
+                float vertical = inputComp.MovementJoystick.Vertical;
 
                 if (horizontal != 0 || vertical != 0)
                 {
@@ -46,6 +47,28 @@ namespace Client
                     {
                         _directionPool.Value.Del(playerEntity);
                     }
+                }
+
+                // === Aim input ===
+                float aimHorizontal = inputComp.AimJoystick.Horizontal;
+                float aimVertical = inputComp.AimJoystick.Vertical;
+
+                if (aimHorizontal != 0 || aimVertical != 0)
+                {
+                    Vector3 aimDirection = new Vector3(aimHorizontal, 0f, aimVertical);
+
+                    if (_aimDirectionPool.Value.Has(playerEntity))
+                    {
+                        _aimDirectionPool.Value.Get(playerEntity).Direction = aimDirection;
+                    }
+                    else
+                    {
+                        _aimDirectionPool.Value.Add(playerEntity).Direction = aimDirection;
+                    }
+                }
+                else
+                {
+                    _aimDirectionPool.Value.Del(playerEntity);
                 }
             }
         }

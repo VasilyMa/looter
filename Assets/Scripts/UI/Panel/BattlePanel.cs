@@ -1,25 +1,30 @@
 using Client;
 using Statement;
-using System;
 using UnityEngine;
+
 public class BattlePanel : SourcePanel
 {
-    [SerializeField] FloatingJoystick joystick;
-
+    [SerializeField] FloatingJoystick movementJoystick;
+    [SerializeField] FloatingJoystick aimJoystick;
     public override void Init(SourceCanvas canvasParent)
     {
         base.Init(canvasParent);
 
-        if (joystick)
+        var world = BattleState.Instance.EcsHandler.World;
+
+        var inputEntity = world.NewEntity();
+
+        ref var inputComp = ref world.GetPool<InputComponent>().Add(inputEntity);
+        BattleState.Instance.InputEntity = inputEntity;
+
+        if (movementJoystick)
         {
-            var world = BattleState.Instance.EcsHandler.World;
-
-            var inputEntity = world.NewEntity();
-
-            ref var inputComp = ref world.GetPool<InputComponent>().Add(inputEntity);
-            inputComp.Joystick = joystick;
-
-            BattleState.Instance.InputEntity = inputEntity;
+            inputComp.MovementJoystick = movementJoystick;
+        }
+        
+        if (aimJoystick)
+        {
+            inputComp.AimJoystick = aimJoystick;
         }
     }
 }
