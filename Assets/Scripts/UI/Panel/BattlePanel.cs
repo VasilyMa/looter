@@ -28,7 +28,9 @@ public class BattlePanel : SourcePanel
         BattleState.Instance.InputEntity = inputEntity;
 
         movementJoystick.OnJoystickDown += OnInputDown;
-        movementJoystick.OnJoystickUp += OnInputUp; 
+        movementJoystick.OnJoystickUp += OnInputUp;
+        aimJoystick.OnJoystickDown += OnInputDown;
+        aimJoystick.OnJoystickUp += OnInputUp;
     }
 
     public override void OnDipose()
@@ -36,7 +38,9 @@ public class BattlePanel : SourcePanel
         base.OnDipose();
 
         movementJoystick.OnJoystickDown -= OnInputDown;
-        movementJoystick.OnJoystickUp -= OnInputUp; 
+        movementJoystick.OnJoystickUp -= OnInputUp;
+        aimJoystick.OnJoystickDown -= OnInputDown;
+        aimJoystick.OnJoystickUp -= OnInputUp;
     }
 
     void OnInputDown(InputType type)

@@ -68,17 +68,23 @@ namespace Statement
         { 
             var runner = PhotonRunHandler.Instance.Runner;
 
-            string networkKey = Guid.NewGuid().ToString();
-
-            byte[] sendData = MemoryPack.MemoryPackSerializer.Serialize<NetworkUnitEntitySpawnEvent>(new NetworkUnitEntitySpawnEvent()
+            if (runner.IsServer)
             {
-                EntityKey = networkKey,
-                SpawnKeyID = PlayerEntityBase.KEY_ID,
-                PlayerOwner = runner.LocalPlayer.PlayerId
-            });
+                foreach (var player in dictionaryPlayers)
+                {
+                    string networkKey = Guid.NewGuid().ToString();
 
-            Debug.Log($"Send spawn event {networkKey}");
-            PhotonRunHandler.Instance.SendUnitEntitySpawnRPC(sendData);
+                    byte[] sendData = MemoryPack.MemoryPackSerializer.Serialize<NetworkUnitEntitySpawnEvent>(new NetworkUnitEntitySpawnEvent()
+                    {
+                        EntityKey = networkKey,
+                        SpawnKeyID = PlayerEntityBase.KEY_ID,
+                        PlayerOwner = player.Value.PlayerId
+                    });
+
+                    Debug.Log($"Send spawn event {networkKey}");
+                    PhotonRunHandler.Instance.SendUnitEntitySpawnRPC(sendData);
+                }
+            }
         }
     }
 }

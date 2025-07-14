@@ -14,16 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   KEY_ID: default_enemy_1
   Components:
-  - rid: 6236884380270723072
+  - rid: 6236884381303570432
   - rid: 6236884380270723073
-  Stats: []
+  Stats:
+  - rid: 6236884381303570436
   references:
     version: 2
     RefIds:
-    - rid: 6236884380270723072
-      type: {class: ViewComponent, ns: Client, asm: Assembly-CSharp}
-      data:
-        RefObject: {fileID: 0}
     - rid: 6236884380270723073
       type: {class: NonPlayerControlComponent, ns: Client, asm: Assembly-CSharp}
       data: 
+    - rid: 6236884381303570432
+      type: {class: ViewComponent, ns: Client, asm: Assembly-CSharp}
+      data:
+        RefObject: {fileID: 8422100308168562767, guid: f8f85afd6fa6bfc4cae26acf043648f1,
+          type: 3}
+    - rid: 6236884381303570436
+      type: {class: HealthComponent, ns: Client, asm: Assembly-CSharp}
+      data:
+        BaseValue: 100

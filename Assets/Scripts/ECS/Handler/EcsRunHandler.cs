@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public abstract class EcsRunHandler
 {
     public EcsWorld World;
+    public bool IsRun;
     /// <summary>
     /// Init systems use local on all clients
     /// </summary>
@@ -63,6 +64,8 @@ public abstract class EcsRunHandler
             .Add(new RunPlayerMovementSystem())
             .Add(new RunNPCMovementSystem())
             .Add(new RunCameraSwitchSystem())
+            .DelHere<DirectionComponent>()
+            .DelHere<AimDirectionComponent>()
             ;
 
         //_sendSystems ToDo this place to send systems

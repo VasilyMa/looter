@@ -19,11 +19,18 @@ namespace Client
             Transform[] allObjects = GameObject.FindObjectsOfType<Transform>();
             int spawnLayer = LayerMask.NameToLayer("SpawnPoint");
 
-            Transform[] spawnPoints = allObjects
-                .Where(transform => transform.gameObject.layer == spawnLayer)
-                .ToArray();
+            spawnComp.SpawnPoints = new System.Collections.Generic.List<Transform>();
 
-            spawnComp.SpawnPoints = spawnPoints;
+            for (int i = 0; i < allObjects.Length; i++)
+            {
+                if (allObjects[i].gameObject.layer == spawnLayer)
+                {
+                    spawnComp.SpawnPoints.Add(allObjects[i]);
+                }
+            } 
+
+            spawnComp.SpawnTick = 2f;
+            spawnComp.Delay = 10f;
         }
     }
 }

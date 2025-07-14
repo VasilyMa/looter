@@ -16,8 +16,8 @@ namespace Client
 
         const float multiplier = 1.0f;
         const float ViewDistance = 10f;
-        const float ViewAngle = 90f;
-        const int RayCount = 9; 
+        const float ViewAngle = 30f;
+        const int RayCount = 6; 
 
         public void Run(IEcsSystems systems)
         {
@@ -26,11 +26,11 @@ namespace Client
                 ref var aimDir = ref _aimDirPool.Value.Get(entity);
                 ref var transformComp = ref _topTranformPool.Value.Get(entity);
 
-                // Поворачиваем верхнюю часть
-                if (transformComp.Transform != null && aimDir.Direction != Vector3.zero) continue; 
+                if (transformComp.Transform == null || aimDir.Direction == Vector3.zero)
+                    continue;
 
                 Quaternion lookRotation = Quaternion.LookRotation(aimDir.Direction);
-                transformComp.Transform.rotation = Quaternion.Slerp(transformComp.Transform.rotation, lookRotation, 0.2f * Time.deltaTime * multiplier); // плавный поворот
+                transformComp.Transform.rotation = lookRotation;// Quaternion.Slerp(transformComp.Transform.rotation, lookRotation, 0.2f * Time.deltaTime * multiplier); // плавный поворот
                                                                                                                            // Подготовка
                 List<Transform> visibleTargets = new List<Transform>();
                 Vector3 origin = transformComp.Transform.position + Vector3.up * 0.5f; // если нужно немного поднять точку

@@ -1,5 +1,4 @@
 using Client;
-using Leopotam.EcsLite;
 using Leopotam.EcsLite.ExtendedSystems;
 
 public class ClientRunHandler : EcsRunHandler

@@ -1,7 +1,6 @@
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using Statement;
-using Unity.Collections.LowLevel.Unsafe;
 
 namespace Client 
 {
@@ -34,8 +33,11 @@ namespace Client
                     networkComp.EntityKey = receiveSpawnComp.EntityKey;
                     networkComp.PlayerOwner = receiveSpawnComp.PlayerOwner;
 
-                    ref var viewComp = ref _viewPool.Value.Add(entity);
+                    ref var viewComp = ref _viewPool.Value.Get(entity);
                     viewComp.RefObject.name = networkComp.EntityKey;
+
+                    ref var transformComp = ref _transformPool.Value.Get(entity);
+                    transformComp.Transform.position = receiveSpawnComp.SpawnPos;
 
                     if (PhotonRunHandler.Instance.Runner.LocalPlayer.PlayerId == receiveSpawnComp.PlayerOwner)
                     {
@@ -44,9 +46,7 @@ namespace Client
                         BattleState.Instance.PlayerEntity = entity;
 
                         if (BattleState.Instance.TryGetEntity("camera", out int cameraEntity))
-                        {
-                            ref var transformComp = ref _transformPool.Value.Add(entity);
-
+                        { 
                             _camerPool.Value.Add(cameraEntity).Target = transformComp.Transform;
                         }
                     }

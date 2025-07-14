@@ -1,5 +1,9 @@
-namespace Client {
-    struct SendSpawnEvent {
-        // add your data here.
+using UnityEngine;
+
+namespace Client 
+{
+    struct SendSpawnEvent 
+    {
+        public Vector3 SpawnPos;
     }
 }
