@@ -2,6 +2,7 @@ using Client;
 using Fusion;
 using Leopotam.EcsLite;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Statement
@@ -19,10 +20,9 @@ namespace Statement
         [HideInInspector] public EcsRunHandler EcsHandler;
 
         public EntityBase PlayerEntityBase;
-        public int PlayerEntity = -1;
-        public int InputEntity = -1;
+        protected Dictionary<string, EcsPackedEntity> _localKeyMap = new();
+        protected Dictionary<string, EcsPackedEntity> _netKeyMap = new();
 
-        protected Dictionary<string, EcsPackedEntity> dictionaryEntities = new Dictionary<string, EcsPackedEntity>();
         protected Dictionary<int, PlayerRef> dictionaryPlayers = new Dictionary<int, PlayerRef>();
         /// <summary>
         /// Invoke when host send any clients message of start game
@@ -41,37 +41,102 @@ namespace Statement
             base.OnDestroy();   
             EcsHandler.Dispose();
         }
-        public virtual void AddEntity(string key, int entity)
-        {
-            if (dictionaryEntities.ContainsKey(key)) return;
 
-            dictionaryEntities.Add(key, EcsHandler.World.PackEntity(entity));
+        public virtual void AddEntity(string localKey, string netKey, int entity)
+        {
+            var packed = EcsHandler.World.PackEntity(entity);
+
+            if (!string.IsNullOrEmpty(localKey) && !_localKeyMap.ContainsKey(localKey))
+                _localKeyMap[localKey] = packed;
+
+            if (!string.IsNullOrEmpty(netKey) && !_netKeyMap.ContainsKey(netKey))
+                _netKeyMap[netKey] = packed;
         }
+
+        public virtual void AddEntity(string localKey, int entity)
+        {
+            var packed = EcsHandler.World.PackEntity(entity);
+
+            if (!string.IsNullOrEmpty(localKey) && !_localKeyMap.ContainsKey(localKey))
+                _localKeyMap[localKey] = packed;
+        }
+
         public virtual bool TryGetEntity(string key, out EcsPackedEntity packedEntity)
         {
-            if (dictionaryEntities.ContainsKey(key))
-            {
-                packedEntity = dictionaryEntities[key];
-                return true;
-            }
-
-            packedEntity = default(EcsPackedEntity);
-            return false;
+            return _localKeyMap.TryGetValue(key, out packedEntity)
+                || _netKeyMap.TryGetValue(key, out packedEntity);
         }
+
         public virtual bool TryGetEntity(string key, out int unpackedEntity)
         {
-            if (dictionaryEntities.ContainsKey(key))
+            if (TryGetEntity(key, out EcsPackedEntity packed) && packed.Unpack(EcsHandler.World, out int entity))
             {
-                if (dictionaryEntities[key].Unpack(EcsHandler.World, out int entity))
-                {
-                    unpackedEntity = entity;
-                    return true;
-                }
+                unpackedEntity = entity;
+                return true;
             }
 
             unpackedEntity = -1;
             return false;
         }
+
+        public virtual void RemoveByLocalKey(string localKey)
+        {
+            if (_localKeyMap.TryGetValue(localKey, out var packed))
+            {
+                _localKeyMap.Remove(localKey);
+
+                // Также удалим из _netKeyMap, если такой же packed найден
+                var netKeyToRemove = _netKeyMap.FirstOrDefault(kvp => kvp.Value.Equals(packed)).Key;
+                if (!string.IsNullOrEmpty(netKeyToRemove))
+                    _netKeyMap.Remove(netKeyToRemove);
+            }
+        }
+
+        public virtual void RemoveByNetKey(string netKey)
+        {
+            if (_netKeyMap.TryGetValue(netKey, out var packed))
+            {
+                _netKeyMap.Remove(netKey);
+
+                // Также удалим из _localKeyMap, если такой же packed найден
+                var localKeyToRemove = _localKeyMap.FirstOrDefault(kvp => kvp.Value.Equals(packed)).Key;
+                if (!string.IsNullOrEmpty(localKeyToRemove))
+                    _localKeyMap.Remove(localKeyToRemove);
+            }
+        }
+
+        /*
+                public virtual void AddEntity(string localKey, string netKey, int entity)
+                {
+                    if (dictionaryEntities.ContainsKey(key)) return;
+
+                    dictionaryEntities.Add(key, EcsHandler.World.PackEntity(entity));
+                }
+                public virtual bool TryGetEntity(string key, out EcsPackedEntity packedEntity)
+                {
+                    if (dictionaryEntities.ContainsKey(key))
+                    {
+                        packedEntity = dictionaryEntities[key];
+                        return true;
+                    }
+
+                    packedEntity = default(EcsPackedEntity);
+                    return false;
+                }
+                public virtual bool TryGetEntity(string key, out int unpackedEntity)
+                {
+                    if (dictionaryEntities.ContainsKey(key))
+                    {
+                        if (dictionaryEntities[key].Unpack(EcsHandler.World, out int entity))
+                        {
+                            unpackedEntity = entity;
+                            return true;
+                        }
+                    }
+
+                    unpackedEntity = -1;
+                    return false;
+                }*/
 
         public void SendRequest<TRequest>(TRequest request) where TRequest : struct, IRequestable
         {

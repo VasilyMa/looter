@@ -29,7 +29,7 @@ namespace Client
                     ref var confirmDamageComp = ref _confirmEventPool.Value.Add(_world.Value.NewEntity());
                     confirmDamageComp.DamageValue = damageData.Value;
                     confirmDamageComp.DamageType = damageData.Type;
-                    confirmDamageComp.SourceEntityKey = damageData.EntityKeySource;
+                    confirmDamageComp.SourceEntityKey = damageData.SourceEntityKey;
                     confirmDamageComp.TargetEntityKey = networkEntityComp.EntityKey;
 
                     if (healthComp.GetCurrentValue <= 0)

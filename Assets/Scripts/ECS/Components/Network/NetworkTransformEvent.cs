@@ -11,6 +11,7 @@ namespace Client
         public string EntityKey;
         public Vector3 Position;
         public Quaternion Rotation;
+        public Quaternion TopRotation;
 
         public void Request(EcsWorld world)
         {
@@ -26,6 +27,7 @@ namespace Client
                 ref var networkComp = ref world.GetPool<ReceiveTransformEvent>().Get(entity);
                 networkComp.Position = Position;
                 networkComp.Quaternion = Rotation;
+                networkComp.TopRotation = TopRotation;
             }
         }
     }
@@ -34,5 +36,6 @@ namespace Client
     {
         public Vector3 Position;
         public Quaternion Quaternion;
+        public Quaternion TopRotation;
     }
 }

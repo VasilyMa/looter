@@ -8,12 +8,13 @@ namespace Client
     sealed class RunPlayerMovementSystem : IEcsRunSystem 
     {
         readonly EcsWorldInject _world = default; 
-        readonly EcsFilterInject<Inc<PlayerComponent, CharacterControllerComponent, MoveComponent, DirectionComponent, TransformComponent, NetworkEntityComponent, OwnComponent>> _filter = default;
+        readonly EcsFilterInject<Inc<PlayerComponent, CharacterControllerComponent, MoveComponent, DirectionComponent, TransformComponent, NetworkEntityComponent, OwnComponent, TopTransformComponent>> _filter = default;
         readonly EcsPoolInject<CharacterControllerComponent> _characterPool = default;
         readonly EcsPoolInject<MoveComponent> _movePool = default;
         readonly EcsPoolInject<DirectionComponent> _directionPool = default;
         readonly EcsPoolInject<TransformComponent> _transformPool = default;
         readonly EcsPoolInject<NetworkEntityComponent> _networkPool = default;
+        readonly EcsPoolInject<TopTransformComponent> _topTransformPool = default;
 
 
         public float _timeSync;
@@ -35,7 +36,7 @@ namespace Client
                 if (_timeSync <= 0)
                 {
                     ref var networkEntityComp = ref _networkPool.Value.Get(entity);
-
+                    ref var topTransformComp = ref _topTransformPool.Value.Get(entity);
                     _timeSync = 0.1f;
 
                     Vector3 currentPosition = transformComp.Transform.position;
@@ -44,7 +45,8 @@ namespace Client
                     {
                         EntityKey = networkEntityComp.EntityKey,
                         Position = currentPosition,
-                        Rotation = transformComp.Transform.localRotation
+                        Rotation = transformComp.Transform.localRotation,
+                        TopRotation = topTransformComp.Transform.localRotation
                     };
 
                     PhotonRunHandler.Instance.SendRequestTransformRPC(MemoryPack.MemoryPackSerializer.Serialize(transformEvent));

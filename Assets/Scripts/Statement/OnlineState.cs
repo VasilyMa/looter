@@ -17,9 +17,6 @@ namespace Statement
 
         public override void Awake()
         {
-            PlayerEntity = -1;
-            InputEntity = -1;
-
             InitEcsHandler();
 
             InitCanvas();

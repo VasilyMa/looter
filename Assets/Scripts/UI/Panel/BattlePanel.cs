@@ -25,7 +25,7 @@ public class BattlePanel : SourcePanel
 
         world.GetPool<InputComponent>().Add(inputEntity);
 
-        BattleState.Instance.InputEntity = inputEntity;
+        BattleState.Instance.AddEntity("input", inputEntity); 
 
         movementJoystick.OnJoystickDown += OnInputDown;
         movementJoystick.OnJoystickUp += OnInputUp;

@@ -28,7 +28,7 @@ namespace Client
                 {
                     Value = Value,
                     Type = DamageType,
-                    EntityKeySource = EntityKeySource,
+                    SourceEntityKey = EntityKeySource,
                 });
             }
         }

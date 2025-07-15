@@ -14,6 +14,7 @@ namespace Client
         readonly EcsPoolInject<TransformComponent> _transformPool = default;
         readonly EcsPoolInject<CameraSwitchEvent> _camerPool = default;
         readonly EcsPoolInject<ViewComponent> _viewPool = default;
+        readonly EcsPoolInject<LerpTransformComponent> _lerpTransformPool = default;
 
         public void Run (IEcsSystems systems) 
         {
@@ -43,15 +44,19 @@ namespace Client
                     {
                         _ownPool.Value.Add(entity);
 
-                        BattleState.Instance.PlayerEntity = entity;
+                        BattleState.Instance.AddEntity("player", receiveSpawnComp.EntityKey, entity); 
 
                         if (BattleState.Instance.TryGetEntity("camera", out int cameraEntity))
                         { 
                             _camerPool.Value.Add(cameraEntity).Target = transformComp.Transform;
                         }
                     }
+                    else
+                    {
+                        _lerpTransformPool.Value.Add(entity);
 
-                    BattleState.Instance.AddEntity(receiveSpawnComp.EntityKey, entity);
+                        BattleState.Instance.AddEntity(receiveSpawnComp.EntityKey, entity);
+                    }
                 }
             }
         }

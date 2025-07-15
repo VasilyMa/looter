@@ -15,18 +15,20 @@ namespace Client
         { 
             foreach (var entity in _fitler.Value)
             {
+                var state = BattleState.Instance;
+
                 ref var confirmDamageComp = ref _confirmDamagePool.Value.Get(entity);
 
-                var playerEntity = BattleState.Instance.PlayerEntity;
-
-                if (_networkPool.Value.Has(playerEntity))
+                if (state.TryGetEntity("player", out int playerEntity))
                 {
-                    ref var networkComp = ref _networkPool.Value.Get(playerEntity);
-                    
-                    if (networkComp.EntityKey == confirmDamageComp.SourceEntityKey)
-                    { 
+                    if (_networkPool.Value.Has(playerEntity))
+                    {
+                        ref var networkComp = ref _networkPool.Value.Get(playerEntity);
 
-                        //todo example damage view
+                        if (networkComp.EntityKey == confirmDamageComp.SourceEntityKey)
+                        {
+                            //todo example damage view
+                        }
                     }
                 }
             }
