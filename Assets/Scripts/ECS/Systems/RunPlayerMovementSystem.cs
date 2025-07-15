@@ -7,7 +7,6 @@ namespace Client
 {
     sealed class RunPlayerMovementSystem : IEcsRunSystem 
     {
-        readonly EcsWorldInject _world = default; 
         readonly EcsFilterInject<Inc<PlayerComponent, CharacterControllerComponent, MoveComponent, DirectionComponent, TransformComponent, NetworkEntityComponent, OwnComponent, TopTransformComponent>> _filter = default;
         readonly EcsPoolInject<CharacterControllerComponent> _characterPool = default;
         readonly EcsPoolInject<MoveComponent> _movePool = default;
