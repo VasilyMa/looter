@@ -755,6 +755,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1851074519577910436, guid: 584754554b885de48ad5908095c39d37,
+        type: 3}
+      propertyPath: TargetScene
+      value: 
+      objectReference: {fileID: 102900000, guid: 4287e7219a2c7254780dcbf288771751,
+        type: 3}
+    - target: {fileID: 1851074519577910436, guid: 584754554b885de48ad5908095c39d37,
+        type: 3}
+      propertyPath: targetSceneName
+      value: MenuScene
+      objectReference: {fileID: 0}
     - target: {fileID: 2883749548939513786, guid: 584754554b885de48ad5908095c39d37,
         type: 3}
       propertyPath: m_Name

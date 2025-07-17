@@ -9,20 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/InitScene.unity
     guid: 3e47fba403e8d894aa18a7cf36dc3f7e
   - enabled: 1
-    path: Assets/Scenes/SetupCharacterScene.unity
-    guid: 05f09c5dc1351d841be17f17e60e1dab
-  - enabled: 1
-    path: Assets/Scenes/CreateCharacterScene.unity
-    guid: b0ffb0461d7b3ad45815a391cd87873f
-  - enabled: 1
     path: Assets/Scenes/MenuScene.unity
     guid: 4287e7219a2c7254780dcbf288771751
   - enabled: 1
     path: Assets/Scenes/LobbyScene.unity
     guid: 1e26a4b83f9a0324798e80f52dd4fba8
-  - enabled: 0
-    path: Assets/Addressables/Scenes/TutorialScene.unity
-    guid: 61d7166a2ef373646aeed24e75ae2489
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 96e763d0dc9b48b4bb75075bfe344401,
       type: 2}

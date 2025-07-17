@@ -1,11 +1,5 @@
 using Fusion;
 
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceProviders;
-using UnityEngine.SceneManagement;
-
 namespace Statement
 {
     public class MainMenuState : State
@@ -23,6 +17,10 @@ namespace Statement
 
         public override void Start()
         { 
+            if (UIModule.OpenCanvas<MainMenuCanvas>(out var canvas))
+            {
+                canvas.OpenPanel<MainMenuPanel>();
+            }
         }
 
         public override void Update()
@@ -37,7 +35,7 @@ namespace Statement
                 Mode = GameMode.AutoHostOrClient,
                 RoomName = $"MatchMaking",
                 ScenePath = "battle_scene_01",
-                SceneIndex = 4,
+                SceneIndex = 2,
                 ProvideInput = true,
                 TargetPlayerCount = 2
             };
