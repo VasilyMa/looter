@@ -1,18 +1,17 @@
-using System.Collections;
+using Leopotam.EcsLite;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponBase : MonoBehaviour
+[CreateAssetMenu(fileName = "NewWeapon", menuName = "Entities/Weapon")]
+public class WeaponBase : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeReference] List<IWeapon> Components;
 
-    // Update is called once per frame
-    void Update()
+    public void Init(EcsWorld world, int entity, string entityOwner)
     {
-        
+        foreach (var component in Components)
+        {
+            component.InitWeapon(world, entity, entityOwner);
+        }
     }
 }

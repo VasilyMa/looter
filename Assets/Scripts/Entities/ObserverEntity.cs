@@ -1,5 +1,5 @@
 using System;
-
+using UnityEngine;
 public class ObserverEntity : SourceEntity
 {
     public static ObserverEntity Instance;
@@ -30,5 +30,18 @@ public class ObserverEntity : SourceEntity
     public void RemovePlayerEffectValue(EffectViewData effectData) 
     {
         PlayerEffectAdded?.Invoke(effectData);
+    }
+}
+
+public class EffectViewData
+{
+    public event Action<float, float> OnRemainingChange;
+    public Sprite Icon;
+    public bool IsPositive;
+    public int Weight;
+
+    public void UpdateRemaining(float current, float max)
+    {
+        OnRemainingChange?.Invoke(current, max);
     }
 }

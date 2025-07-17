@@ -28,7 +28,7 @@ namespace Client
                 {
                     var entity = _world.Value.NewEntity();
 
-                    entityBase.InitEntity(_world.Value, entity);
+                    entityBase.InitEntity(_world.Value, entity, receiveSpawnComp.EntityKey);
 
                     ref var networkComp = ref _networkEntityPool.Value.Add(entity);
                     networkComp.EntityKey = receiveSpawnComp.EntityKey;

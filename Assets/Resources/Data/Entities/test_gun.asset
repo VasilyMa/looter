@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eea6f24bf93ca1409828962d41cb017, type: 3}
+  m_Name: test_gun
+  m_EditorClassIdentifier: 
+  Components:
+  - rid: 6236884446435868672
+  - rid: 6236884446435868677
+  - rid: 6236884446435868679
+  - rid: 6236884446435868681
+  references:
+    version: 2
+    RefIds:
+    - rid: 6236884446435868672
+      type: {class: WeaponComponent, ns: Client, asm: Assembly-CSharp}
+      data:
+        Type: 0
+        OwnerEntityKey: 
+    - rid: 6236884446435868677
+      type: {class: AmmoComponent, ns: Client, asm: Assembly-CSharp}
+      data:
+        MaxValue: 10
+        MagazineValue: 10
+        CurrentValue: 0
+        RemainingValue: 0
+    - rid: 6236884446435868679
+      type: {class: ReloadComponent, ns: Client, asm: Assembly-CSharp}
+      data:
+        ReloadTime: 5
+        CurrentReloadTime: 0
+    - rid: 6236884446435868681
+      type: {class: CooldownComponent, ns: Client, asm: Assembly-CSharp}
+      data:
+        Tick: 1
+        CurrentTime: 0

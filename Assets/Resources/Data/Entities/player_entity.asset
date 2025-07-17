@@ -19,6 +19,7 @@ MonoBehaviour:
   Stats:
   - rid: 8307050283103158275
   - rid: 8307050283103158277
+  Weapon: {fileID: 11400000, guid: b6c5715c51cc1a04583bac91e3d3f420, type: 2}
   references:
     version: 2
     RefIds:

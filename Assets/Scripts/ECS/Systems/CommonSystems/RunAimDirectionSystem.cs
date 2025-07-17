@@ -17,7 +17,7 @@ namespace Client
         const float multiplier = 1.0f;
         const float ViewDistance = 10f;
         const float ViewAngle = 30f;
-        const int RayCount = 6; 
+        const int RayCount = 9; 
 
         public void Run(IEcsSystems systems)
         {
@@ -33,7 +33,7 @@ namespace Client
                 transformComp.Transform.rotation = lookRotation;// Quaternion.Slerp(transformComp.Transform.rotation, lookRotation, 0.2f * Time.deltaTime * multiplier); // плавный поворот
                                                                                                                            // ѕодготовка
                 List<Transform> visibleTargets = new List<Transform>();
-                Vector3 origin = transformComp.Transform.position + Vector3.up * 0.5f; // если нужно немного подн€ть точку
+                Vector3 origin = transformComp.Transform.position + Vector3.up * 0.25f; // если нужно немного подн€ть точку
                 Vector3 forward = aimDir.Direction.normalized;
                 float halfAngle = ViewAngle / 2f;
 

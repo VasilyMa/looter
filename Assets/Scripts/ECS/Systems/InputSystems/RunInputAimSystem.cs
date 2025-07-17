@@ -11,6 +11,8 @@ namespace Client
         readonly EcsFilterInject<Inc<PlayerComponent, OwnComponent>> _playerFilter = default;
         readonly EcsPoolInject<InputAimComponent> _inputPool = default;
         readonly EcsPoolInject<AimDirectionComponent> _aimDirectionPool = default;
+        readonly EcsPoolInject<AllowShootComponent> _allowShootPool = default;
+        //readonly EcsPoolInject<SendTransformUpdateEvent> _sendTransformUpdatePool = default;
 
         public void Run (IEcsSystems systems) 
         {
@@ -23,23 +25,35 @@ namespace Client
                     float aimHorizontal = inputComp.AimJoystick.Horizontal;
                     float aimVertical = inputComp.AimJoystick.Vertical;
 
-                    if (aimHorizontal != 0 || aimVertical != 0)
+                    float sqrMagnitude = aimHorizontal * aimHorizontal + aimVertical * aimVertical;
+
+                    // Если палец двигает джойстик — записываем направление
+                    if (sqrMagnitude > 0.01f) // любое движение, можно использовать 0.001f как порог
                     {
                         Vector3 aimDirection = new Vector3(aimHorizontal, 0f, aimVertical);
 
                         if (_aimDirectionPool.Value.Has(playerEntity))
-                        {
                             _aimDirectionPool.Value.Get(playerEntity).Direction = aimDirection;
+                        else
+                            _aimDirectionPool.Value.Add(playerEntity).Direction = aimDirection;
+
+                        // Только если игрок **реально прицелился**, добавляем AllowShootComponent
+                        if (sqrMagnitude > 0.64f) // 0.8^2
+                        { 
+                            _allowShootPool.Value.Add(playerEntity);
                         }
                         else
                         {
-                            _aimDirectionPool.Value.Add(playerEntity).Direction = aimDirection;
+                            _allowShootPool.Value.Del(playerEntity);
                         }
                     }
                     else
                     {
                         _aimDirectionPool.Value.Del(playerEntity);
-                    } 
+                        _allowShootPool.Value.Del(playerEntity);
+                    }
+
+                    //_sendTransformUpdatePool.Value.Add(playerEntity);
                 } 
             }
         }

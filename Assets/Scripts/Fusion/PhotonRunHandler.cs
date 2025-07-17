@@ -56,7 +56,14 @@ public class PhotonRunHandler : NetworkBehaviour
     {
         var data = MemoryPackSerializer.Deserialize<NetworkConfirmDamageEvent>(recieve);
 
-    } 
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void SendRequestShootRPC(byte[] recieve)
+    { 
+        var data = MemoryPackSerializer.Deserialize<NetworkShootRequestEvent>(recieve); 
+        BattleState.Instance.SendRequest(data);
+    }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void SendRequestTransformRPC(byte[] recieve)
@@ -91,8 +98,7 @@ public class PhotonRunHandler : NetworkBehaviour
         {
             Debug.LogError($"[PhotonRunHandler] Scene RPC failed: {ex}");
         }
-    }
-
+    } 
     private IEnumerator LoadSceneRoutine(string scenePath)
     {
         yield return PrepareForSceneUnload();
@@ -108,14 +114,12 @@ public class PhotonRunHandler : NetworkBehaviour
 
         Debug.Log($"[PhotonRunHandler] Scene loaded: {loadHandle.Result.Scene.name}");
         yield return InitializeScenePostLoad();
-    }
-
+    } 
     private IEnumerator PrepareForSceneUnload()
     {
         BattleState.Instance?.ShutdownEcsHandler();
         yield return null;
-    }
-
+    } 
     private IEnumerator InitializeScenePostLoad()
     {
         BattleState.Instance?.OnSceneLoaded();

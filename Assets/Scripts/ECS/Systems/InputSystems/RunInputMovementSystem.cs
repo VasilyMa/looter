@@ -10,7 +10,8 @@ namespace Client
         readonly EcsFilterInject<Inc<InputMovementComponent, InputComponent>> _filter = default;
         readonly EcsFilterInject<Inc<PlayerComponent, OwnComponent>> _playerFilter = default;
         readonly EcsPoolInject<InputMovementComponent> _inputPool = default;
-        readonly EcsPoolInject<DirectionComponent> _directionPool = default; 
+        readonly EcsPoolInject<DirectionComponent> _directionPool = default;
+        //readonly EcsPoolInject<SendTransformUpdateEvent> _sendTransformUpdatePool = default;
 
         public void Run(IEcsSystems systems)
         {
@@ -45,6 +46,8 @@ namespace Client
                             _directionPool.Value.Del(playerEntity);
                         }
                     } 
+
+                    //_sendTransformUpdatePool.Value.Add(playerEntity);
                 }
             }
         }

@@ -17,9 +17,12 @@ public class EntityBase : ScriptableObject, ISerializationCallbackReceiver
     [Header("Combat stats of entity")]
     [SerializeReference] public List<IStat> Stats;
 
+    [Space(5f)]
+    [Header("Weapon")]
+    public WeaponBase Weapon;
 
 
-    public void InitEntity(EcsWorld world, int entity)
+    public void InitEntity(EcsWorld world, int entity, string netEntityKey)
     {
         foreach (var component in Components)
         {
@@ -29,6 +32,15 @@ public class EntityBase : ScriptableObject, ISerializationCallbackReceiver
         foreach (var stat in Stats)
         {
             stat.Init(world, entity);
+        }
+
+        if (Weapon)
+        {
+            int weaponEntity = world.NewEntity();
+
+            Weapon.Init(world, weaponEntity, netEntityKey);
+
+            world.GetPool<HolderWeaponComponent>().Add(entity).WeaponEntity = weaponEntity;
         }
     }
 

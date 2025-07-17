@@ -1,18 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class IWeapon : MonoBehaviour
+using Leopotam.EcsLite; 
+public interface IWeapon
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void InitWeapon(EcsWorld world, int entity, string ownerEntity);
 }

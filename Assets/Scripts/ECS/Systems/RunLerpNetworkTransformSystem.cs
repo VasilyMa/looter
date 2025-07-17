@@ -2,7 +2,8 @@ using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using UnityEngine;
 
-namespace Client {
+namespace Client 
+{
     sealed class RunLerpNetworkTransformSystem : IEcsRunSystem 
     {
         readonly EcsFilterInject<Inc<LerpTransformComponent, TransformComponent, TopTransformComponent>, Exc<OwnComponent>> _filter = default;

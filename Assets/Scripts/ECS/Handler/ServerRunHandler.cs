@@ -14,6 +14,7 @@ public class ServerRunHandler : EcsRunHandler
             ;
 
         _requestSystems
+            .Add(new RunRequestWrapperSystem<NetworkShootRequestEvent>())
             .Add(new RunRequestWrapperSystem<NetworkDamageEffectEvent>())
 
             ;

@@ -103,16 +103,3 @@ public class StatusBar : SourceBar
         ObserverEntity.Instance.PlayerEffectRemoved -= OnEffectRemoved;
     }
 }
-
-    public class EffectViewData
-{
-    public event Action<float, float> OnRemainingChange;
-    public Sprite Icon; 
-    public bool IsPositive;
-    public int Weight;
-
-    public void UpdateRemaining(float current, float max)
-    { 
-        OnRemainingChange?.Invoke(current, max);
-    }
-}

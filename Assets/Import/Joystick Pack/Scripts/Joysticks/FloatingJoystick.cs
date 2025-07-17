@@ -6,7 +6,6 @@ public class FloatingJoystick : Joystick
     public event Action<InputType> OnJoystickDown;
     public event Action<InputType> OnJoystickUp;
 
-
     protected override void Start()
     {
         base.Start();

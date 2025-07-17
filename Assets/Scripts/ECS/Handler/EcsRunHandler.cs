@@ -59,13 +59,19 @@ public abstract class EcsRunHandler
             .Add(new RunInputMovementSystem())
             .Add(new RunInputAimSystem())
             .Add(new RunAimDirectionSystem())
+            .Add(new RunWeaponCooldownSystem())
             .Add(new RunSelectTargetSystem())
-            .Add(new RunShootSystem())
+            .Add(new RunPrepareShootSystem())
+            .Add(new RunRequestShootSystem())
+            .Add(new RunResolveShootSystem())
             .Add(new RunPlayerMovementSystem())
             .Add(new RunNPCMovementSystem())
             .Add(new RunCameraSwitchSystem())
+            .DelHere<ResolveShootEvent>()
             .DelHere<DirectionComponent>()
             .DelHere<AimDirectionComponent>()
+            .DelHere<AllowShootComponent>()
+            .DelHere<WeaponShootRequestEvent>()
             ;
 
         //_sendSystems ToDo this place to send systems
@@ -84,6 +90,15 @@ public abstract class EcsRunHandler
 
         _syncUpdateSystems
             .Add(new RunLerpNetworkTransformSystem())
+            ;
+
+        _sendSystems
+            .Add(new RunSendShootSystem())
+
+            .Add(new RunSendTransformUpdateSystem())
+
+            .DelHere<SendShootEvent>()
+            //.DelHere<SendTransformUpdateEvent>()
             ;
 
 #if UNITY_EDITOR
