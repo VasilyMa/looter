@@ -1,5 +1,6 @@
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
+using UnityEngine;
 
 namespace Client 
 {
@@ -26,14 +27,19 @@ namespace Client
                 {
                     healthComp.Sub(damageData.Value);
 
+                    Debug.Log($"take damage {damageData.Value} health is {healthComp.GetCurrentValue}");
+
+                    ref var networkSenderComp = ref _networkEntityPool.Value.Get(damageData.SourceEntity);
+
                     ref var confirmDamageComp = ref _confirmEventPool.Value.Add(_world.Value.NewEntity());
                     confirmDamageComp.DamageValue = damageData.Value;
                     confirmDamageComp.DamageType = damageData.Type;
-                    confirmDamageComp.SourceEntityKey = damageData.SourceEntityKey;
+                    confirmDamageComp.SourceEntityKey = networkSenderComp.EntityKey;
                     confirmDamageComp.TargetEntityKey = networkEntityComp.EntityKey;
 
                     if (healthComp.GetCurrentValue <= 0)
                     {
+                        Debug.Log($"Entity {entity} die!");
                         break;
                     }
                 }

@@ -36,14 +36,7 @@ public class PhotonRunHandler : NetworkBehaviour
         BattleState.Instance.SendRequest(data);
         Debug.Log($"Receive spawn event {data.EntityKey}");
     }
-
-    [Rpc(RpcSources.Proxies, RpcTargets.StateAuthority)]
-    public void SendRequestDamageEffectRPC(byte[] recieve)
-    {
-        var data = MemoryPackSerializer.Deserialize<NetworkDamageEffectEvent>(recieve);
-        BattleState.Instance.SendRequest(data);
-    }
-
+     
     [Rpc(RpcSources.StateAuthority, RpcTargets.Proxies)]
     public void SendRequestHealthUpdateRPC(byte[] recieve)
     {

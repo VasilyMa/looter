@@ -14,15 +14,17 @@ public class ServerRunHandler : EcsRunHandler
             ;
 
         _requestSystems
-            .Add(new RunRequestWrapperSystem<NetworkShootRequestEvent>())
-            .Add(new RunRequestWrapperSystem<NetworkDamageEffectEvent>())
+            .Add(new RunRequestWrapperSystem<NetworkShootRequestEvent>()) 
 
             ;
 
         _receiveSystems
+            .Add(new RunAllowHitSystem())
+             
             .Add(new RunTakeDamageSystem())
 
             .DelHere<TakeDamageEvent>()
+            .DelHere<HitRequest>()
             ;
         _sendSystems
             .Add(new RunSendConfirmDamageSystem())

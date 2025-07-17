@@ -11,6 +11,6 @@ namespace Client
     {
         public float Value;
         public DamageType Type;
-        public string SourceEntityKey;
+        public int SourceEntity;
     }
 }

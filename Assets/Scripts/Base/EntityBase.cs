@@ -40,7 +40,15 @@ public class EntityBase : ScriptableObject, ISerializationCallbackReceiver
 
             Weapon.Init(world, weaponEntity, netEntityKey);
 
-            world.GetPool<HolderWeaponComponent>().Add(entity).WeaponEntity = weaponEntity;
+            ref var weaponComp = ref world.GetPool<WeaponComponent>().Get(weaponEntity);
+            weaponComp.Index = 0;
+            ref var holderWeaponComp = ref world.GetPool<HolderWeaponComponent>().Add(entity);
+            holderWeaponComp.Weapons = new List<WeaponData>();
+            holderWeaponComp.Weapons.Add(new WeaponData()
+            {
+                WeaponEntity = weaponEntity,
+            });
+
         }
     }
 

@@ -29,7 +29,7 @@ namespace Client
                 }
             } 
 
-            spawnComp.SpawnTick = 2f;
+            spawnComp.SpawnTick = 10f;
             spawnComp.Delay = 10f;
         }
     }

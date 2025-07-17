@@ -5,8 +5,7 @@ using MemoryPack;
 namespace Client 
 {
     sealed class RunSendShootSystem : IEcsRunSystem 
-    {
-        readonly EcsWorldInject _world = default;
+    { 
         readonly EcsFilterInject<Inc<SendShootEvent>> _filter = default;
         readonly EcsPoolInject<SendShootEvent> _shootPool = default;
 
@@ -18,6 +17,7 @@ namespace Client
 
                 NetworkShootRequestEvent networkShootRequestEvent = new NetworkShootRequestEvent()
                 {
+                    WeaponIndex = sendShootComp.WeaponIndex,
                     SenderEntityKey = sendShootComp.SenderEntityKey,
                     TargetEntityKey = sendShootComp.TargetEntityKey,
                 };

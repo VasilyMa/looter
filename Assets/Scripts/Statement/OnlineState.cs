@@ -75,7 +75,8 @@ namespace Statement
                     {
                         EntityKey = networkKey,
                         SpawnKeyID = PlayerEntityBase.KEY_ID,
-                        PlayerOwner = player.Value.PlayerId
+                        PlayerOwner = player.Value.PlayerId,
+                        SpawnPos = new Vector3(UnityEngine.Random.Range(-1, 1), 0.5f, UnityEngine.Random.Range(-1f, 1f))
                     });
 
                     Debug.Log($"Send spawn event {networkKey}");

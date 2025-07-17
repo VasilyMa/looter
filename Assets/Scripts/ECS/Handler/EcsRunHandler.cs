@@ -74,8 +74,6 @@ public abstract class EcsRunHandler
             .DelHere<WeaponShootRequestEvent>()
             ;
 
-        //_sendSystems ToDo this place to send systems
-
         _requestSystems
             .Add(new RunRequestWrapperSystem<NetworkUnitEntitySpawnEvent>())
             .Add(new RunRequestWrapperSystem<NetworkTransformEvent>())

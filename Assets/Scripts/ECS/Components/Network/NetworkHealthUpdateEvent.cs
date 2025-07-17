@@ -1,9 +1,11 @@
 using Leopotam.EcsLite;
+using MemoryPack;
 using Statement;
 
 namespace Client 
 {
-    struct NetworkHealthUpdateEvent : IRequestable
+    [MemoryPackable]
+    public partial struct NetworkHealthUpdateEvent : IRequestable
     {
         public string EntityKey;
         public float CurrentValue;
