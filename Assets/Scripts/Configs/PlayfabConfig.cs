@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
-using System.Xml;
-
+using System.Collections; 
 using PlayFab;
 using PlayFab.ClientModels;
 
@@ -10,7 +8,126 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Playfab", menuName = "Config/Playfab")]
 public class PlayfabConfig : Config
 {
+
     public event Action OnRegistrationComplete;
+    public event Action OnLoginSuccess;
+    public event Action<string> OnLoginError;
+
+    public const string playerPrefsKey = "PlayfabUniqueID";
+    [HideInInspector] public bool isConnectAndReady;
+
+    public override IEnumerator Init()
+    {
+        isConnectAndReady = false;
+
+        if (PlayerPrefs.HasKey(playerPrefsKey))
+        {
+            string customId = PlayerPrefs.GetString(playerPrefsKey);
+
+            var request = new LoginWithCustomIDRequest
+            {
+                CustomId = customId,
+                CreateAccount = false
+            };
+
+            PlayFabClientAPI.LoginWithCustomID(request, result =>
+            {
+                isConnectAndReady = true;
+                PlayerEntity.Instance.PlayfabCustomID = customId;
+                OnLoginSuccess?.Invoke();
+            }, error =>
+            {
+                Debug.LogError("Login error: " + error.GenerateErrorReport());
+                OnLoginError?.Invoke(error.GenerateErrorReport());
+            });
+        }
+        else
+        {
+            if (UIModule.OpenCanvas<LoginCanvas>(out var loginCanvas))
+            {
+                loginCanvas.OpenPanel<LoginPanel>();
+            }
+        }
+
+        yield return new WaitUntil(() => isConnectAndReady);
+    }
+
+    public void RegisterNewUser(string nickname)
+    {
+        string customId = Guid.NewGuid().ToString();
+
+        var request = new LoginWithCustomIDRequest
+        {
+            CustomId = customId,
+            CreateAccount = true
+        };
+
+        PlayFabClientAPI.LoginWithCustomID(request, result =>
+        {
+            Debug.Log("Account created with CustomID");
+            PlayerPrefs.SetString(playerPrefsKey, customId);
+            PlayerPrefs.Save();
+
+            PlayerEntity.Instance.PlayfabCustomID = customId;
+            PlayerEntity.Instance.PlayerNickName = nickname;
+
+            UpdateDisplayName(nickname);
+
+            isConnectAndReady = true;
+            OnRegistrationComplete?.Invoke();
+        }, error =>
+        {
+            Debug.LogError("Registration failed: " + error.GenerateErrorReport());
+            OnLoginError?.Invoke(error.GenerateErrorReport());
+        });
+
+        UIModule.CloseCanvas<LoginCanvas>(out var loginCanvas);
+    }
+
+    public void QuickLogin(Action onSuccess, Action<string> onError)
+    {
+        if (!PlayerPrefs.HasKey(playerPrefsKey))
+        {
+            onError?.Invoke("No saved login data");
+            return;
+        }
+
+        string customId = PlayerPrefs.GetString(playerPrefsKey);
+
+        var request = new LoginWithCustomIDRequest
+        {
+            CustomId = customId,
+            CreateAccount = false
+        };
+
+        PlayFabClientAPI.LoginWithCustomID(request, result =>
+        {
+            PlayerEntity.Instance.PlayfabCustomID = customId;
+            onSuccess?.Invoke();
+        }, error =>
+        {
+            onError?.Invoke(error.GenerateErrorReport());
+        });
+    }
+
+    void UpdateDisplayName(string nickname)
+    {
+        var request = new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = nickname
+        };
+
+        PlayFabClientAPI.UpdateUserTitleDisplayName(request, result =>
+        {
+            Debug.Log("Display name set to: " + nickname);
+        }, error =>
+        {
+            Debug.LogError("Failed to update display name: " + error.GenerateErrorReport());
+        });
+    }
+
+    #region OLD
+    /*public event Action OnRegistrationComplete;
     public event Action OnLoginSuccess;
     public event Action<string> OnLoginError;
 
@@ -268,6 +385,7 @@ public class PlayfabConfig : Config
         {
             Debug.LogError("Ошибка сохранения никнейма: " + error.GenerateErrorReport());
         });
-    }
+    }*/
+    #endregion
 }
 

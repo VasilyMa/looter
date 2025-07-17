@@ -17,7 +17,7 @@ namespace Statement
 
         public override void Start()
         {
-            InvokeCanvas<CreateCharacterCanvas>().OpenPanel<CreateCharacterPanel>();
+            //InvokeCanvas<CreateCharacterCanvas>().OpenPanel<CreateCharacterPanel>();
         }
 
         public override void FixedUpdate()

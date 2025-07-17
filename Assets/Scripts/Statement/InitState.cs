@@ -18,7 +18,7 @@ namespace Statement
         [SerializeField] private string targetSceneName; 
         public override void Awake()
         {
-            InitCanvas();
+            UIModule.Initialize();
         }
         public override void Start()
         {
