@@ -37,7 +37,7 @@ namespace Statement
                 ScenePath = "battle_scene_01",
                 SceneIndex = 2,
                 ProvideInput = true,
-                TargetPlayerCount = 2
+                TargetPlayerCount = 1
             };
 
             await PhotonInitializer.Instance.StartSession(session);

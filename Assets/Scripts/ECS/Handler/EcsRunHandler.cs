@@ -59,8 +59,8 @@ public abstract class EcsRunHandler
             .Add(new RunInputMovementSystem())
             .Add(new RunInputAimSystem())
             .Add(new RunAimDirectionSystem())
-            .Add(new RunWeaponCooldownSystem())
             .Add(new RunSelectTargetSystem())
+            .Add(new RunAimingToTargetSystem())
             .Add(new RunPrepareShootSystem())
             .Add(new RunRequestShootSystem())
             .Add(new RunResolveShootSystem())
@@ -72,6 +72,11 @@ public abstract class EcsRunHandler
             .DelHere<AimDirectionComponent>()
             .DelHere<AllowShootComponent>()
             .DelHere<WeaponShootRequestEvent>()
+            .DelHere<AimComponent>()
+            .DelHere<AimTargetBufferComponent>()
+            .DelHere<SearchTargetEvent>()
+
+            .Add(new RunWeaponCooldownSystem())
             ;
 
         _requestSystems

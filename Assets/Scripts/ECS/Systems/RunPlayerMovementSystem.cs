@@ -11,10 +11,7 @@ namespace Client
         readonly EcsPoolInject<CharacterControllerComponent> _characterPool = default;
         readonly EcsPoolInject<MoveComponent> _movePool = default;
         readonly EcsPoolInject<DirectionComponent> _directionPool = default;
-        readonly EcsPoolInject<TransformComponent> _transformPool = default;
-        readonly EcsPoolInject<NetworkEntityComponent> _networkPool = default;
-        readonly EcsPoolInject<TopTransformComponent> _topTransformPool = default;
-
+        readonly EcsPoolInject<TransformComponent> _transformPool = default; 
         public void Run (IEcsSystems systems) 
         {
             foreach (var entity in _filter.Value)

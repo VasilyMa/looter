@@ -19,15 +19,7 @@ namespace Client
                 ref var targetsBuffer = ref _targetsPool.Value.Get(entity);
                 var targets = targetsBuffer.TargetsBuffer;
 
-                if (targets == null || targets.Count == 0)
-                {
-                    // Нет видимых целей — удаляем AimComponent
-                    if (_aimPool.Value.Has(entity))
-                        _aimPool.Value.Del(entity);
-
-                    _eventPool.Value.Del(entity);
-                    continue;
-                }
+                if (targets == null || targets.Count == 0) continue; 
 
                 ref var transformComp = ref _transformPool.Value.Get(entity);
                 // Выбор ближайшей цели (можно сделать по другому критерию)

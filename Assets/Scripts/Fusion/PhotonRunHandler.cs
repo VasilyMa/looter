@@ -110,12 +110,12 @@ public class PhotonRunHandler : NetworkBehaviour
     } 
     private IEnumerator PrepareForSceneUnload()
     {
-        BattleState.Instance?.ShutdownEcsHandler();
+        if(State.Instance is BattleState) BattleState.Instance?.ShutdownEcsHandler();
         yield return null;
     } 
     private IEnumerator InitializeScenePostLoad()
     {
-        BattleState.Instance?.OnSceneLoaded();
+        if (State.Instance is BattleState) BattleState.Instance?.OnSceneLoaded();
         yield return null;
     }
 }
