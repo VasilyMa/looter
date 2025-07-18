@@ -57,15 +57,25 @@ public abstract class EcsRunHandler
 
         _commonSystems
             .Add(new RunInputMovementSystem())
-            .Add(new RunInputAimSystem())
+            .Add(new RunInputAimSystem()) 
+
+            .Add(new RunDisposeInputMovementSystem())
+            .Add(new RunDisposeInputAimSystem())
+            
             .Add(new RunAimDirectionSystem())
             .Add(new RunSelectTargetSystem())
             .Add(new RunAimingToTargetSystem())
+
             .Add(new RunPrepareShootSystem())
             .Add(new RunRequestShootSystem())
             .Add(new RunResolveShootSystem())
+
+            .Add(new RunBroadcastStartShootSystem())
+            .Add(new RunBroadcastFinishShootSystem())
+
             .Add(new RunPlayerMovementSystem())
             .Add(new RunNPCMovementSystem())
+
             .Add(new RunCameraSwitchSystem())
             .DelHere<ResolveShootEvent>()
             .DelHere<DirectionComponent>()
@@ -75,11 +85,19 @@ public abstract class EcsRunHandler
             .DelHere<AimComponent>()
             .DelHere<AimTargetBufferComponent>()
             .DelHere<SearchTargetEvent>()
+            .DelHere<CancelShootingEvent>()
+
+            .DelHere<DisposeAimEvent>()
+            .DelHere<DisposeMovementEvent>()
+            .DelHere<DisposeInputAimEvent>()
+            .DelHere<DisposeInputMovementEvent>()
 
             .Add(new RunWeaponCooldownSystem())
             ;
 
         _requestSystems
+            .Add(new RunRequestWrapperSystem<NetworkStartShootEvent>())
+            .Add(new RunRequestWrapperSystem<NetworkFinishShootEvent>())
             .Add(new RunRequestWrapperSystem<NetworkUnitEntitySpawnEvent>())
             .Add(new RunRequestWrapperSystem<NetworkTransformEvent>())
             ;
@@ -96,10 +114,14 @@ public abstract class EcsRunHandler
             ;
 
         _sendSystems
+            .Add(new RunSendStartShootingSystem())
+            .Add(new RunSendFinishShootingSystem())
             .Add(new RunSendShootSystem())
 
             .Add(new RunSendTransformUpdateSystem())
 
+            .DelHere<SendFinishShootingEvent>()
+            .DelHere<SendStartShootingEvent>()
             .DelHere<SendShootEvent>()
             //.DelHere<SendTransformUpdateEvent>()
             ;

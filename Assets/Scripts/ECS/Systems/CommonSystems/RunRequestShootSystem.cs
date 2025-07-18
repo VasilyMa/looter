@@ -5,8 +5,7 @@ using UnityEngine;
 namespace Client 
 {
     sealed class RunRequestShootSystem : IEcsRunSystem 
-    {
-        readonly EcsWorldInject _world = default;
+    { 
         readonly EcsFilterInject<Inc<WeaponComponent, WeaponShootRequestEvent, CooldownComponent>> _filter = default; 
         readonly EcsPoolInject<CooldownComponent> _cooldownPool = default;
         readonly EcsPoolInject<WeaponShootRequestEvent> _requestPool = default;

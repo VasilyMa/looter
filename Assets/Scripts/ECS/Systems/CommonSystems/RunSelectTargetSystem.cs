@@ -21,8 +21,8 @@ namespace Client
 
                 if (targets == null || targets.Count == 0) continue; 
 
-                ref var transformComp = ref _transformPool.Value.Get(entity);
-                // Выбор ближайшей цели (можно сделать по другому критерию)
+                ref var transformComp = ref _transformPool.Value.Get(entity); 
+
                 Transform closest = null;
                 float minDistance = float.MaxValue;
 

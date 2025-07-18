@@ -10,7 +10,7 @@ namespace Client
         public float DamageValue;
         public DamageType DamageType;
         public string SourceEntityKey;
-        public string TargetEntityKey;
+        public string TargetEntityKey; 
 
         public void Request(EcsWorld world)
         {

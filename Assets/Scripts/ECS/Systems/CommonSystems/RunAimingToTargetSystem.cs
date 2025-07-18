@@ -16,6 +16,7 @@ namespace Client
             {
                 ref var aimComp = ref _aimPool.Value.Get(entity);
                 ref var topTransformComp = ref _topTransformPool.Value.Get(entity);
+
                 topTransformComp.Transform.LookAt(aimComp.Target, Vector3.up);
             }
         }

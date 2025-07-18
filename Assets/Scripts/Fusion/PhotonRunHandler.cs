@@ -59,6 +59,20 @@ public class PhotonRunHandler : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
+    public void SendRequestStartShootingRPC(byte[] recieve)
+    { 
+        var data = MemoryPackSerializer.Deserialize<NetworkStartShootEvent>(recieve); 
+        BattleState.Instance.SendRequest(data);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void SendRequestFinishShootingRPC(byte[] recieve)
+    { 
+        var data = MemoryPackSerializer.Deserialize<NetworkFinishShootEvent>(recieve); 
+        BattleState.Instance.SendRequest(data);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void SendRequestTransformRPC(byte[] recieve)
     {
         var data = MemoryPackSerializer.Deserialize<NetworkTransformEvent>(recieve);
