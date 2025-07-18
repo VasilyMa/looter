@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a47f546fc70ec8428172694e78e4288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  Type: 0
   handleRange: 1
   deadZone: 0
   axisOptions: 0
@@ -412,7 +412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a47f546fc70ec8428172694e78e4288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  Type: 0
   handleRange: 1
   deadZone: 0
   axisOptions: 0
@@ -507,8 +507,8 @@ GameObject:
   - component: {fileID: 6917813203128183574}
   - component: {fileID: 4166370922201504524}
   - component: {fileID: 7794881378737427224}
-  - component: {fileID: 3167973603212679036}
   - component: {fileID: 8005098238957939605}
+  - component: {fileID: 5703199142535650543}
   m_Layer: 5
   m_Name: BattlePanel
   m_TagString: Untagged
@@ -575,7 +575,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3167973603212679036
+--- !u!225 &8005098238957939605
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5388032817138324219}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &5703199142535650543
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -594,18 +606,6 @@ MonoBehaviour:
   isAlwaysOpen: 0
   movementJoystick: {fileID: 2072087677553403867}
   aimJoystick: {fileID: 646533595034184552}
---- !u!225 &8005098238957939605
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5388032817138324219}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &9194821713487648358
 GameObject:
   m_ObjectHideFlags: 0
@@ -618,7 +618,7 @@ GameObject:
   - component: {fileID: 3019622076507873531}
   - component: {fileID: 7558599832790079836}
   - component: {fileID: 2838755272985038542}
-  - component: {fileID: 2833337196383543378}
+  - component: {fileID: 5246122540821068136}
   m_Layer: 5
   m_Name: BattleCanvas
   m_TagString: Untagged
@@ -708,8 +708,8 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
---- !u!114 &2833337196383543378
+    m_Bits: 127
+--- !u!114 &5246122540821068136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

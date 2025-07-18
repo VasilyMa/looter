@@ -40,7 +40,7 @@ public class UIHandler : MonoBehaviour
             }
         }
 
-        canvas.InvokeCanvas();
+        canvas?.InvokeCanvas();
 
         return canvas != null;
     }

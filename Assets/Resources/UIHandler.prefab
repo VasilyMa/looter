@@ -690,7 +690,7 @@ PrefabInstance:
     - target: {fileID: 9126704076393074420, guid: d965b9eb8e3209643893c2627a615ee3,
         type: 3}
       propertyPath: m_BlockingMask.m_Bits
-      value: 4294967295
+      value: 127
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -714,7 +714,7 @@ PrefabInstance:
     - target: {fileID: 2149631034527015593, guid: 5fef626f9962ef74f95be61ec3f7e54a,
         type: 3}
       propertyPath: m_BlockingMask.m_Bits
-      value: 4294967295
+      value: 127
       objectReference: {fileID: 0}
     - target: {fileID: 5850976079975576513, guid: 5fef626f9962ef74f95be61ec3f7e54a,
         type: 3}
@@ -864,7 +864,7 @@ PrefabInstance:
     - target: {fileID: 2838755272985038542, guid: 24b1aff4094ca8f41a1b100f72c81c52,
         type: 3}
       propertyPath: m_BlockingMask.m_Bits
-      value: 4294967295
+      value: 127
       objectReference: {fileID: 0}
     - target: {fileID: 7486299568026113076, guid: 24b1aff4094ca8f41a1b100f72c81c52,
         type: 3}
