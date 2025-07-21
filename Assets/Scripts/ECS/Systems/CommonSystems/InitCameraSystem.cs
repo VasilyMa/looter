@@ -7,6 +7,7 @@ namespace Client
 {
     sealed class InitCameraSystem : IEcsInitSystem 
     {
+        readonly EcsSharedInject<BattleState> _state;
         readonly EcsWorldInject _world = default;
         readonly EcsPoolInject<CameraComponent> _cameraPool = default;
 
@@ -17,7 +18,7 @@ namespace Client
             ref var cameraComp = ref _cameraPool.Value.Add(entity);
             cameraComp.Camera = GameObject.FindFirstObjectByType<Cinemachine.CinemachineVirtualCamera>();
 
-            BattleState.Instance.AddEntity("camera", entity);
+            _state.Value.AddEntity("camera", entity);
         }
     }
 }

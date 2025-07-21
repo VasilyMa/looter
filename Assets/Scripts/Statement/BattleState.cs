@@ -31,7 +31,7 @@ namespace Statement
         /// <summary>
         /// Invoke when scene loaded with addressables
         /// </summary>
-        public virtual void OnSceneLoaded() => EcsHandler = new MainEcsHandler();
+        public virtual void OnSceneLoaded() => EcsHandler = new MainEcsHandler(this);
         public virtual void ShutdownEcsHandler() => EcsHandler.Dispose();
         public override void Start() { }
         public override void Update() => EcsHandler.Run();
@@ -178,7 +178,7 @@ namespace Statement
 
         protected void InitEcsHandler()
         {
-            EcsHandler = PhotonRunHandler.Instance.Runner.IsServer ? new ServerRunHandler() : new ClientRunHandler();
+            EcsHandler = PhotonRunHandler.Instance.Runner.IsServer ? new ServerRunHandler(this) : new ClientRunHandler(this);
 
             EcsHandler.Init();
         }

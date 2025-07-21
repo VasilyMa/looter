@@ -6,6 +6,7 @@ namespace Client
 {
     sealed class RunConfirmDamageUpdateSystem : IEcsRunSystem 
     {
+        readonly EcsSharedInject<BattleState> _state;
         readonly EcsWorldInject _world = default;
         readonly EcsFilterInject<Inc<ConfirmDamageUpdateEvent>> _fitler = default;
         readonly EcsPoolInject<ConfirmDamageUpdateEvent> _confirmDamagePool = default;
@@ -15,11 +16,9 @@ namespace Client
         { 
             foreach (var entity in _fitler.Value)
             {
-                var state = BattleState.Instance;
-
                 ref var confirmDamageComp = ref _confirmDamagePool.Value.Get(entity);
 
-                if (state.TryGetEntity("player", out int playerEntity))
+                if (_state.Value.TryGetEntity("player", out int playerEntity))
                 {
                     if (_networkPool.Value.Has(playerEntity))
                     {

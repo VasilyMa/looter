@@ -1,9 +1,10 @@
 using Client;
 using Leopotam.EcsLite.ExtendedSystems;
+using Statement;
 
 public class ServerRunHandler : EcsRunHandler
 {
-    public ServerRunHandler()
+    public ServerRunHandler(BattleState state) : base(state)
     {
         _initSystems
             .Add(new InitSpawnSystem())
@@ -37,8 +38,8 @@ public class ServerRunHandler : EcsRunHandler
             ;
     }
 
-    public override EcsRunHandler Clone()
+    public override EcsRunHandler Clone(BattleState state)
     {
-        return new ServerRunHandler();
+        return new ServerRunHandler(state);
     }
 }

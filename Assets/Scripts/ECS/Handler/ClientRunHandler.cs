@@ -1,9 +1,10 @@
 using Client;
 using Leopotam.EcsLite.ExtendedSystems;
+using Statement;
 
 public class ClientRunHandler : EcsRunHandler
 {
-    public ClientRunHandler()
+    public ClientRunHandler(BattleState state) : base(state)
     {
         _requestSystems
             .Add(new RunRequestWrapperSystem<NetworkHealthUpdateEvent>())
@@ -24,8 +25,8 @@ public class ClientRunHandler : EcsRunHandler
             ;*/
     }
 
-    public override EcsRunHandler Clone()
+    public override EcsRunHandler Clone(BattleState state)
     {
-        return new ClientRunHandler ();
+        return new ClientRunHandler(state);
     }
 }

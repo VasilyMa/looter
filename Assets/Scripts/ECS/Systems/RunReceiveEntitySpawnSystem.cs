@@ -6,6 +6,7 @@ namespace Client
 {
     sealed class RunReceiveEntitySpawnSystem : IEcsRunSystem 
     {
+        readonly EcsSharedInject<BattleState> _state;
         readonly EcsWorldInject _world = default;
         readonly EcsFilterInject<Inc<ReceiveSpawnEvent>> _filter = default;
         readonly EcsPoolInject<ReceiveSpawnEvent> _receiveSpawnPool = default;
@@ -44,9 +45,9 @@ namespace Client
                     {
                         _ownPool.Value.Add(entity);
 
-                        BattleState.Instance.AddEntity("player", receiveSpawnComp.EntityKey, entity); 
+                        _state.Value.AddEntity("player", receiveSpawnComp.EntityKey, entity); 
 
-                        if (BattleState.Instance.TryGetEntity("camera", out int cameraEntity))
+                        if (_state.Value.TryGetEntity("camera", out int cameraEntity))
                         { 
                             _camerPool.Value.Add(cameraEntity).Target = transformComp.Transform;
                         }
@@ -55,7 +56,7 @@ namespace Client
                     {
                         _lerpTransformPool.Value.Add(entity);
 
-                        BattleState.Instance.AddEntity(receiveSpawnComp.EntityKey, entity);
+                        _state.Value.AddEntity(receiveSpawnComp.EntityKey, entity);
                     }
                 }
             }

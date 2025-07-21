@@ -1,12 +1,14 @@
- 
+
+using Statement;
+
 public class MainEcsHandler : EcsRunHandler
 { 
-    public MainEcsHandler() : base()
+    public MainEcsHandler(BattleState state) : base(state)
     { 
     }
-    public override EcsRunHandler Clone()
+    public override EcsRunHandler Clone(BattleState state)
     {
-        return new MainEcsHandler();
+        return new MainEcsHandler(state);
     }
     public override void Init() => _commonSystems?.Init(); 
     public override void Run() => _commonSystems?.Run(); 

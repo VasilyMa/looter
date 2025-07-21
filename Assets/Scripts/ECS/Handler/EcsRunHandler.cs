@@ -2,6 +2,7 @@ using Client;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using Leopotam.EcsLite.ExtendedSystems;
+using Statement;
 using System.Collections.Generic;
 
 public abstract class EcsRunHandler
@@ -16,6 +17,10 @@ public abstract class EcsRunHandler
     /// Common systems is update local systems
     /// </summary>
     protected EcsSystems _commonSystems;
+    /// <summary>
+    /// Action systems is responsobility for the actions of player, full pipeline prerequest, request, resolve
+    /// </summary>
+    protected EcsSystems _actionSystems;
     /// <summary>
     /// Request systems is get from network event
     /// </summary>
@@ -38,18 +43,19 @@ public abstract class EcsRunHandler
     protected EcsSystems _disposeSystems;
     protected EcsData _data;
     protected List<EcsSystems> _allSystems;
-    public EcsRunHandler()
+    public EcsRunHandler(BattleState state)
     {
         World = new Leopotam.EcsLite.EcsWorld();
         _data = new EcsData();
         
-        _initSystems = new EcsSystems(World, _data);
-        _commonSystems = new EcsSystems(World, _data); 
-        _requestSystems = new EcsSystems(World, _data);
-        _syncUpdateSystems = new EcsSystems(World, _data);
-        _receiveSystems = new EcsSystems(World, _data);
-        _sendSystems = new EcsSystems(World, _data);
-        _disposeSystems = new EcsSystems(World, _data);
+        _initSystems = new EcsSystems(World, state);
+        _commonSystems = new EcsSystems(World, state);
+        _actionSystems = new EcsSystems(World, state);
+        _requestSystems = new EcsSystems(World, state);
+        _syncUpdateSystems = new EcsSystems(World, state);
+        _receiveSystems = new EcsSystems(World, state);
+        _sendSystems = new EcsSystems(World, state);
+        _disposeSystems = new EcsSystems(World, state);
 
         _initSystems
             .Add(new InitCameraSystem())
@@ -69,6 +75,9 @@ public abstract class EcsRunHandler
             .Add(new RunPrepareShootSystem())
             .Add(new RunRequestShootSystem())
             .Add(new RunResolveShootSystem())
+
+            .Add(new RunDisposeAimSystem())
+            .Add(new RunDisposeMovementSystem())
 
             .Add(new RunBroadcastStartShootSystem())
             .Add(new RunBroadcastFinishShootSystem())
@@ -95,6 +104,16 @@ public abstract class EcsRunHandler
             .Add(new RunWeaponCooldownSystem())
             ;
 
+        _actionSystems
+            .Add(new RunPreRequestActionSystem<ShootActionComponent>())
+            .Add(new RunRequestActionSystem<ShootActionComponent>())
+            .Add(new RunResolveActionSystem<ShootActionComponent>())
+            .Add(new RunDeniedActionSystem())
+
+            .DelHere<PreRequestActionEvent>()
+            .DelHere<RequestActionEvent>()
+            .DelHere<DeniedActionEvent>()
+            ;
         _requestSystems
             .Add(new RunRequestWrapperSystem<NetworkStartShootEvent>())
             .Add(new RunRequestWrapperSystem<NetworkFinishShootEvent>())
@@ -133,6 +152,7 @@ public abstract class EcsRunHandler
         {
             _initSystems, 
             _commonSystems,
+            _actionSystems,
             _requestSystems,
             _receiveSystems,
             _syncUpdateSystems,
@@ -140,7 +160,7 @@ public abstract class EcsRunHandler
             _disposeSystems
         };
     }
-    public abstract EcsRunHandler Clone();
+    public abstract EcsRunHandler Clone(BattleState state);
 
     public virtual void Init()
     {
