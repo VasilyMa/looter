@@ -14,6 +14,7 @@ public class BattlePanel : SourcePanel
     EcsPool<InputAimComponent> _aimPool = default;
     EcsPool<DisposeInputAimEvent> _aimDisposePool = default;
     EcsPool<DisposeInputMovementEvent> _moveDisposePool = default;
+    EcsPool<DisposeInputActionEvent> _actionDisposePool = default;
      
     public override void OnOpen(params Action[] onComplete)
     {
@@ -27,6 +28,7 @@ public class BattlePanel : SourcePanel
             _aimPool = world.GetPool<InputAimComponent>();
             _aimDisposePool = world.GetPool<DisposeInputAimEvent>();
             _moveDisposePool = world.GetPool<DisposeInputMovementEvent>();
+            _actionDisposePool = world.GetPool<DisposeInputActionEvent>();
 
             var inputEntity = world.NewEntity();
 
@@ -60,18 +62,10 @@ public class BattlePanel : SourcePanel
             switch (type)
             {
                 case InputType.move:
-                    if (!_movePool.Has(inputEntity))
-                    {
-                        ref var inputMoveComp = ref _movePool.Add(inputEntity);
-                        inputMoveComp.MovementJoystick = movementJoystick;
-                    }
+                    if (!_movePool.Has(inputEntity)) _movePool.Add(inputEntity).MovementJoystick = movementJoystick;
                     break;
                 case InputType.aim:
-                    if (!_aimPool.Has(inputEntity))
-                    {
-                        ref var inputAimComp = ref _aimPool.Add(inputEntity);
-                        inputAimComp.AimJoystick = aimJoystick;
-                    }
+                    if (!_aimPool.Has(inputEntity)) _aimPool.Add(inputEntity).AimJoystick = aimJoystick; 
                     break;
             }
         }
@@ -90,6 +84,7 @@ public class BattlePanel : SourcePanel
                     break;
                 case InputType.aim:
                     _aimDisposePool.Add(inputEntity);
+                    _actionDisposePool.Add(inputEntity);
                     break;
             }
         }

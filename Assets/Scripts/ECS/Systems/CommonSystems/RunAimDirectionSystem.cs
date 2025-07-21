@@ -30,10 +30,10 @@ namespace Client
                     continue;
 
                 Quaternion lookRotation = Quaternion.LookRotation(aimDir.Direction);
-                transformComp.Transform.rotation = lookRotation;// Quaternion.Slerp(transformComp.Transform.rotation, lookRotation, 0.2f * Time.deltaTime * multiplier); // плавный поворот
-                                                                                                                           // Подготовка
+                transformComp.Transform.rotation = lookRotation;
+
                 List<Transform> visibleTargets = new List<Transform>();
-                Vector3 origin = transformComp.Transform.position + Vector3.up * 0.25f; // если нужно немного поднять точку
+                Vector3 origin = transformComp.Transform.position + Vector3.up * 0.25f;
                 Vector3 forward = aimDir.Direction.normalized;
                 float halfAngle = ViewAngle / 2f;
 

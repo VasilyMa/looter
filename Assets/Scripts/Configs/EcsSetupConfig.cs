@@ -17,7 +17,7 @@ public class EcsSetupConfig : Config
 
     public void InitMainEcsHandler()
     {
-        _ecsRunHandler = EcsHandler.Clone();
+        //_ecsRunHandler = EcsHandler.Clone();
     }
 
     public EcsRunHandler GetMainEcsHandler()

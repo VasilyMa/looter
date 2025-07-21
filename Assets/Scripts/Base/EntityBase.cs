@@ -48,7 +48,8 @@ public class EntityBase : ScriptableObject, ISerializationCallbackReceiver
             {
                 WeaponEntity = weaponEntity,
             });
-
+            ref var actionComp = ref world.GetPool<ActionComponent>().Get(entity);
+            actionComp.CurrentActionEntity = weaponEntity;
         }
     }
 

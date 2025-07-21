@@ -16,6 +16,7 @@ MonoBehaviour:
   Components:
   - rid: 9181853936227975168
   - rid: 9112970153533636608
+  - rid: 6236884540946120704
   Stats:
   - rid: 8307050283103158275
   - rid: 8307050283103158277
@@ -23,6 +24,10 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 6236884540946120704
+      type: {class: ActionComponent, ns: Client, asm: Assembly-CSharp}
+      data:
+        CurrentActionEntity: 0
     - rid: 8307050283103158275
       type: {class: HealthComponent, ns: Client, asm: Assembly-CSharp}
       data:

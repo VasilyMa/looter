@@ -1,7 +1,9 @@
+using Leopotam.EcsLite;
+
 namespace Client 
 {
     public interface IRequestAction
     {
-        void Request();
+        bool Request(EcsWorld world, int entity);
     }
 }

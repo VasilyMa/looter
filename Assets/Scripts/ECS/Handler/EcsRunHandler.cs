@@ -64,20 +64,24 @@ public abstract class EcsRunHandler
         _commonSystems
             .Add(new RunInputMovementSystem())
             .Add(new RunInputAimSystem()) 
+            .Add(new RunInputActionSystem()) 
+
+            .Add(new RunInvokeActionSystem())
 
             .Add(new RunDisposeInputMovementSystem())
             .Add(new RunDisposeInputAimSystem())
+            .Add(new RunDisposeInputActionSystem())
             
             .Add(new RunAimDirectionSystem())
             .Add(new RunSelectTargetSystem())
             .Add(new RunAimingToTargetSystem())
 
+
+
+
             .Add(new RunPrepareShootSystem())
             .Add(new RunRequestShootSystem())
             .Add(new RunResolveShootSystem())
-
-            .Add(new RunDisposeAimSystem())
-            .Add(new RunDisposeMovementSystem())
 
             .Add(new RunBroadcastStartShootSystem())
             .Add(new RunBroadcastFinishShootSystem())
@@ -86,6 +90,11 @@ public abstract class EcsRunHandler
             .Add(new RunNPCMovementSystem())
 
             .Add(new RunCameraSwitchSystem())
+
+            .Add(new RunDisposeAimSystem())
+            .Add(new RunDisposeMovementSystem())
+            .Add(new RunDisposeInActionSystem()) 
+
             .DelHere<ResolveShootEvent>()
             .DelHere<DirectionComponent>()
             .DelHere<AimDirectionComponent>()
@@ -93,27 +102,30 @@ public abstract class EcsRunHandler
             .DelHere<WeaponShootRequestEvent>()
             .DelHere<AimComponent>()
             .DelHere<AimTargetBufferComponent>()
-            .DelHere<SearchTargetEvent>()
             .DelHere<CancelShootingEvent>()
 
+            .DelHere<SearchTargetEvent>()
             .DelHere<DisposeAimEvent>()
             .DelHere<DisposeMovementEvent>()
             .DelHere<DisposeInputAimEvent>()
             .DelHere<DisposeInputMovementEvent>()
+            .DelHere<DisposeInputActionEvent>()
 
             .Add(new RunWeaponCooldownSystem())
             ;
 
         _actionSystems
-            .Add(new RunPreRequestActionSystem<ShootActionComponent>())
-            .Add(new RunRequestActionSystem<ShootActionComponent>())
-            .Add(new RunResolveActionSystem<ShootActionComponent>())
-            .Add(new RunDeniedActionSystem())
+            .Add(new RunPreRequestActionSystem<WeaponActionComponent>())
+            .Add(new RunRequestActionSystem<WeaponActionComponent>()) 
+            .Add(new RunDisposeActionSystem<WeaponActionComponent>()) 
+            .Add(new RunResolveActionSystem<WeaponActionComponent>())
 
             .DelHere<PreRequestActionEvent>()
             .DelHere<RequestActionEvent>()
-            .DelHere<DeniedActionEvent>()
+            .DelHere<ResolveActionEvent>()
+            .DelHere<DisposeActionEvent>()
             ;
+
         _requestSystems
             .Add(new RunRequestWrapperSystem<NetworkStartShootEvent>())
             .Add(new RunRequestWrapperSystem<NetworkFinishShootEvent>())

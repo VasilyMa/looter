@@ -11,7 +11,7 @@ namespace Statement
 
         public override void Awake()
         {
-            EcsHandler = new TutorEcsHandler();
+            EcsHandler = new TutorEcsHandler(this);
         }
 
         public override void Start()

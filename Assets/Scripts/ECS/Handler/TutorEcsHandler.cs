@@ -1,13 +1,14 @@
 using Client;
+using Statement;
 
 public class TutorEcsHandler : EcsRunHandler
 {
-    public TutorEcsHandler() 
+    public TutorEcsHandler(BattleState state) : base(state) 
     { 
     } 
 
-    public override EcsRunHandler Clone()
+    public override EcsRunHandler Clone(BattleState state)
     {
-        return new TutorEcsHandler();
+        return new TutorEcsHandler(state);
     }
 }

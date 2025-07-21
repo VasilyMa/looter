@@ -16,6 +16,8 @@ namespace Client
             
             ref var attackComp = ref world.GetPool<AttackComponent>().Add(entity);
             attackComp.Value = 1f;
+
+            ref var shootComp = ref world.GetPool<WeaponActionComponent>().Add(entity);
         }
     }
 

@@ -1,7 +1,9 @@
+using Leopotam.EcsLite;
+
 namespace Client 
 {
     public interface IResolveAction 
     {
-        void Resolve();
+        void Resolve(EcsWorld world, int entity);
     }
 }

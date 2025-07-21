@@ -1,5 +1,5 @@
 namespace Client {
-    struct DeniedActionEvent {
+    struct InActionComponent {
         // add your data here.
     }
 }

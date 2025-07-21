@@ -34,7 +34,7 @@ public class PhotonRunHandler : NetworkBehaviour
     {
         var data = MemoryPackSerializer.Deserialize<NetworkUnitEntitySpawnEvent>(recieve);
         BattleState.Instance.SendRequest(data);
-        Debug.Log($"Receive spawn event {data.EntityKey}");
+        //Debug.Log($"Receive spawn event {data.EntityKey}");
     }
      
     [Rpc(RpcSources.StateAuthority, RpcTargets.Proxies)]
